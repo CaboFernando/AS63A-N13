@@ -15,10 +15,14 @@
         <h5>Título</h5>
         <h6>Título</h6>
 
+        <br><br>
+
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
             Possimus ipsam aperiam maxime. Molestiae optio accusantium 
             quas magni minus asperiores soluta accusamus ut odio, atque 
             autem, distinctio ex. Quisquam, eligendi accusantium.</p>
+
+        <br><br>
 
         <ol>
             <li>Item 1</li>
@@ -26,15 +30,21 @@
             <li>Item 3</li>
         </ol>
 
+        <br><br>
+
         <ul>
             <li>Item 1</li>
             <li>Item 2</li>
             <li>Item 3</li>
         </ul>
 
+        <br><br>
+
         <img src="C:\Users\Aluno\Desktop\AS63A\assets\flor.jpg" alt="Descrição da imagem">
 
-        <table>
+        <br><br>
+
+        <table border="2" width="400">
             <tr>
                 <th>Cabeçalho 1</th>
                 <th>Cabeçalho 2</th>
@@ -48,16 +58,53 @@
                 <th>Dado 4</th>
             </tr>
         </table>
+
+        <br><br>
         
         <form action="/enviar-dados" method="post">
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome">
 
+            <br><br>
+
             <label for="email">Email</label>
             <input type="text" id="email" name="email">
 
-            <label for="mensagem">Mensagem</label>
+            <br><br>
+
+            <label for="senha">Senha</label>
+            <input type="password" name="senha">
+
+            <br><br>
+
+            <label for="sexo">Qual é o seu Sexo?</label><br>
+            <input type="radio" name="sexo" value="M"> Masculino<br>
+            <input type="radio" name="sexo" value="F"> Feminino<br>
+
+            <br><br>
+
+            <label for="interesses">Qual o seu esporte favorito? Selecione todos os que você gosta.</label><br>
+            <input type="checkbox" name="interesses" > Futebol<br>
+            <input type="checkbox" name="interesses" > Volei<br>
+            <input type="checkbox" name="interesses" > Basquete<br>
+            <input type="checkbox" name="interesses" > Handebol<br>
+            <input type="checkbox" name="interesses" > Futsal<br>
+            <input type="checkbox" name="interesses" > Tenis<br>
+
+            <br><br>
+
+            <label for="estado">Qual o seu estado de origem?</label><br>
+            <select name="estado">
+                <option value="sp">SP</option>
+                <option value="mg">MG</option>
+                <option value="rj">RJ</option>
+                <option value="rs">RS</option>
+            </select><br><br>
+
+            <label for="mensagem">Mensagem</label><br>
             <textarea type="text" id="mensagem" name="mensagem"></textarea> 
+
+            <br><br>
 
             <input type="submit" value="Enviar">
 
