@@ -3,9 +3,9 @@ body{
 }
 
 p{
-    color: brown;
+    color:blue;
 }
 
 :first p{
-    color: azure;
+    color:crimson;
 }
