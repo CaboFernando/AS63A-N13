@@ -1,0 +1,11 @@
+body{
+    background-color: aquamarine;
+}
+
+p{
+    color:blue;
+}
+
+:first p{
+    color:crimson;
+}
