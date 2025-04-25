@@ -1,11 +1,28 @@
+p {
+    color: green;
+}
+
+#p_lore{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 25px;
+}
+
+.titulo_um {
+    color: purple;
+}
+
+#titulo_dois {
+    color: brown;
+}
+
+.botao_diferente {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: violet;    
+}
+
 body{
-    background-color: aquamarine;
-}
-
-p{
-    color:blue;
-}
-
-:first p{
-    color:crimson;
+    background-image: url("https://imagens.usp.br/wp-content/uploads/Campus-15-Foto-Marcos-Santos20101220_066.jpg");
+    background-repeat: no-repeat;
 }
