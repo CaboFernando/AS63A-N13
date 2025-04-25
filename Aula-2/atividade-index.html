@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C# e .NET 8 com Bootstrap</title>
+    <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+  </head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" target="_blank" href="https://dotnet.microsoft.com/en-us/">.NET 8</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://dotnet.microsoft.com/en-us/">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://learn.microsoft.com/pt-br/dotnet/csharp/">Doc
+                        C#</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://learn.microsoft.com/pt-br/dotnet/">Doc .Net</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron text-center bg-primary text-white">
+        <h1 class="display-4">Bem-vindo ao mundo do C# e .NET 8!</h1>
+        <p class="lead">Explore os recursos mais modernos da plataforma de desenvolvimento da Microsoft.</p>
+        <a class="btn btn-light btn-lg" target="_blank"
+            href="https://learn.microsoft.com/pt-br/dotnet/core/whats-new/dotnet-8" role="button">Saiba mais</a>
+    </div>
+
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png"
+                        alt="Logo C#">
+                    <div class="card-body">
+                        <h5 class="card-title">C# Moderno</h5>
+                        <p class="card-text">Conheça as novas features da linguagem C# 12.</p>
+                        <a target="_blank" href="https://learn.microsoft.com/pt-br/dotnet/csharp/whats-new/csharp-12"
+                            class="btn btn-primary">Ver mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Performance do .NET 8</h5>
+                        <p class="card-text">O .NET 8 traz otimizações incríveis para aplicações web, desktop e cloud.
+                        </p>
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#performanceModal">
+                            Detalhes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-info">
+                    <div class="card-body">
+                        <h5 class="card-title">Cross-platform</h5>
+                        <p class="card-text">Desenvolva para Windows, Linux e MacOS com um único código.</p>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#infoModal">Saiba
+                            mais</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cross-platform no .NET 8</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    .NET 8 oferece suporte completo para múltiplas plataformas, incluindo Web, Desktop (WinForms/WPF),
+                    MAUI para mobile e APIs modernas para Linux.
+                    <br><br>
+                    <a href="https://learn.microsoft.com/pt-br/dotnet/maui/what-is-maui" target="_blank"
+                        class="btn btn-outline-primary mt-3">Leia sobre o MAUI</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="performanceModal" tabindex="-1" role="dialog" aria-labelledby="performanceModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Melhorias de Performance no .NET 8</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    O .NET 8 oferece diversas melhorias de performance, incluindo:
+                    <ul>
+                        <li>Inicialização mais rápida de aplicações.</li>
+                        <li>Redução no uso de memória.</li>
+                        <li>JIT otimizado e melhor suporte a AOT.</li>
+                        <li>Aprimoramentos no ASP.NET Core para servidores de alta escala.</li>
+                    </ul>
+                    <a target="_blank" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-8/"
+                        class="btn btn-outline-success mt-3">Ler mais no blog oficial</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <h3>Receba atualizações sobre C# e .NET</h3>
+        <form action="https://example.com/inscrever" method="POST">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu nome" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Endereço de email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="email@exemplo.com"
+                    required />
+            </div>
+            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                title="Envia seus dados">
+                Inscrever-se
+            </button>
+        </form>
+    </div>
+
+    <footer class="bg-dark text-white text-center p-3">
+        <p class="mb-0">Desenvolvido com ❤️ usando Bootstrap e focado em C# / .NET 8</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+</body>
+
+</html>
