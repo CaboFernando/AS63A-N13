@@ -1,43 +1,129 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisão</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <style>
-        p{
-            background-color: aquamarine;
-            /* não usar CSS assim */
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Primeiro Site</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
 
-<body>
-    <button><a href="http://www.google.com" target="_blank">Meu Botão</button>
+    <body>
+        <h1>Título</h1>
+        <h2>Título</h2>
+        <h3>Título</h3>
+        <h4>Título</h4>
+        <h5>Título</h5>
+        <h6>Título</h6>
 
-    <p style="color: red;">Não usar CSS assim.</p>
+        <br><br>
 
-    <br>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+            Possimus ipsam aperiam maxime. Molestiae optio accusantium 
+            quas magni minus asperiores soluta accusamus ut odio, atque 
+            autem, distinctio ex. Quisquam, eligendi accusantium.</p>
 
-    <p>Usar CSS assim.</p>
+        <br><br>
 
-    <br>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+            Possimus ipsam aperiam maxime. Molestiae optio accusantium 
+            quas magni minus asperiores soluta accusamus ut odio, atque 
+            autem, distinctio ex. Quisquam, eligendi accusantium.</p>
 
-    <h1 class="titulo_um">Título um</h1>
-    <h1 id="titulo_dois">Título dois</h1>
+        <br><br>
 
-    <button class="botao_diferente">Botão Diferente
+        <ol>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+        </ol>
 
-    </button>
+        <br><br>
 
-    <p id="p_lore">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita perspiciatis enim, necessitatibus ad, dolorum tempore voluptatibus deleniti placeat temporibus voluptatum mollitia praesentium assumenda tempora error quod fugiat quis eius nemo.</p>
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+        </ul>
 
-    <div>
+        <br><br>
+
+        <img src="assets/flor.jpg" alt="Descrição da imagem">
+
+        <br><br>
+
+        <table border="2" width="400">
+            <tr>
+                <th>Cabeçalho 1</th>
+                <th>Cabeçalho 2</th>
+            </tr>
+            <tr>
+                <th>Dado 1</th>
+                <th>Dado 2</th>
+            </tr>
+            <tr>
+                <th>Dado 3</th>
+                <th>Dado 4</th>
+            </tr>
+        </table>
+
+        <hr>
+
+        <br><br>
         
-    </div>
+        <form action="/enviar-dados" method="post">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome">
 
-</body>
+            <br><br>
+
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email">
+
+            <br><br>
+
+            <label for="senha">Senha</label>
+            <input type="password" name="senha">
+
+            <br><br>
+
+            <label for="sexo">Qual é o seu Sexo?</label><br>
+            <input type="radio" name="sexo" value="M"> Masculino<br>
+            <input type="radio" name="sexo" value="F"> Feminino<br>
+
+            <br><br>
+
+            <label for="interesses">Qual o seu esporte favorito? Selecione todos os que você gosta.</label><br>
+            <input type="checkbox" name="interesses" > Futebol<br>
+            <input type="checkbox" name="interesses" > Volei<br>
+            <input type="checkbox" name="interesses" > Basquete<br>
+            <input type="checkbox" name="interesses" > Handebol<br>
+            <input type="checkbox" name="interesses" > Futsal<br>
+            <input type="checkbox" name="interesses" > Tenis<br>
+
+            <br><br>
+
+            <label for="estado">Qual o seu estado de origem?</label><br>
+            <select name="estado">
+                <option value="sp">SP</option>
+                <option value="mg">MG</option>
+                <option value="rj">RJ</option>
+                <option value="rs">RS</option>
+            </select><br><br>
+
+            <label for="mensagem">Mensagem</label><br>
+            <textarea type="text" id="mensagem" name="mensagem"></textarea> 
+
+            <br><br>
+
+            <input type="submit" value="Enviar">
+
+        </form>
+
+        <br><br>
+
+        <a href="https://github.com/CaboFernando/AS63A-N13" target="_blank">Esse código está disponível nesse link</a><br>
+        <a href="cadastro.html" target="_blank">Pagina 2</a>
+    </body>
 
 </html>
