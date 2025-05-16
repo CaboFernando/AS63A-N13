@@ -5,9 +5,23 @@ const Pedido = require("./modules/pedidos");
 const Produto = require("./modules/produtos");
 
 async function testarInsercao() {
-    const user = new Usuario("Monique", "monique@example.com");
+    //endereco
+    //produto
+    //metodoPagamento
+    //pedido
+    //cliente
 
-    await user.inserir();
+    const endereco = new Endereco();
+    const produto = new Produto();
+    const metodoPagamento = new MetodoPagamento();
+    const pedido = new Pedido();
+    const cliente = new Cliente();
+
+    await endereco.inserir();
+    await produto.inserir();
+    await metodoPagamento.inserir();
+    await pedido.inserir();
+    await cliente.inserir();
 }
 
 testarInsercao();

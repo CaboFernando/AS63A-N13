@@ -1,4 +1,4 @@
-const { connect } = require("./db");
+const { connect } = require("../db");
 
 class Endereco {
     constructor(rua, numero, cep, logradouro, isAtivo) {
