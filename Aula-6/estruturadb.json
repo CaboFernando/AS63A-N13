@@ -1,0 +1,51 @@
+db.createCollection("clientes")
+db.createCollection("enderecos")
+db.createCollection("metodosPagamentos")
+db.createCollection("pedidos")
+db.createCollection("produtos")
+
+
+db.clientes.insertOne({
+    nome: "",
+    email: "",
+    telefone: "",
+    documento: "",
+    idPedido: [new ObjectId()],
+    idEndereco: [new ObjectId()],
+    isAtivo: true
+})
+
+
+db.enderecos.insertOne({
+    rua: "",
+    numero: "",
+    cep: "",
+    logradouro: "",
+    isAtivo: true
+})
+
+
+db.metodosPagamentos.insertOne({
+    tipo: "",
+    dados: "",
+    status: "",
+    isAtivo: true
+})
+
+
+db.pedidos.insertOne({
+    dataCompra: new Date(),
+    dataEntrega: new Date(),
+    idProduto: new ObjectId(),
+    idMetodoPagamento: new ObjectId(),
+    status: "",
+    isAtivo: true
+})
+
+
+db.produtos.insertOne({
+    nome: "",
+    descricao: "",
+    condicao: "",
+    isAtivo: true
+})
