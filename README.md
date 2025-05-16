@@ -7,3 +7,4 @@ Repositório destinado a disciplina de Programação Web Back-End
 - Aula 4 - Intrudução ao Node.Js pt 1
 - Aula 5 - Intrudução ao Node.Js pt 2
 - Aula 6 - Introdução ao MongoDB
+- Aula 6 - Node + MongoDb
