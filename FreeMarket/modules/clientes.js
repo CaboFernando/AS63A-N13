@@ -1,4 +1,4 @@
-const { connect } = require("./db");
+const { connect } = require("../db");
 
 class Cliente {
     constructor(nome, email, telefone, documento, idPedido, idEndereco, isAtivo) {
