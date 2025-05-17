@@ -1,4 +1,6 @@
 const { connect } = require("../db");
+const { ObjectId } = require('mongodb');
+
 
 class MetodoPagamento {
     constructor(tipo, dados, status, isAtivo) {
@@ -33,9 +35,28 @@ class MetodoPagamento {
 
             console.log("Métodos de Pagamentos listados:", result);
             client.close();
+            return result;
 
         } catch (error) {
             console.log("Erro ao listar os métodos de pagamentos:", error);
+        }
+    }
+
+    async obterPorId(id) {
+        try {
+            const { db, client } = await connect();
+            const result = await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(id) });
+
+            if (result) {
+                console.log("Método de Pagamento encontrado:", result);
+            } else {
+                console.log("Método de Pagamento não encontrado.");
+            }
+
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao obter método de pagamento por ID:", error);
         }
     }
 
