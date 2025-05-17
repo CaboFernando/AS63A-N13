@@ -64,6 +64,23 @@ class Pedido {
         }
     }
 
+    async removerPorId(id) {
+        try {
+            const { db, client } = await connect();
+            const resultado = await db.collection("pedidos").deleteOne({ _id: new ObjectId(id) });
+
+            if (resultado.deletedCount > 0) {
+                console.log("Pedido removido com sucesso.");
+            } else {
+                console.log("Pedido não encontrado para remoção.");
+            }
+
+            client.close();
+        } catch (error) {
+            console.log("Erro ao remover pedido por ID:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();
