@@ -25,6 +25,24 @@ class Produto {
             console.log("Erro ao inserir produto:", error);
         }
     }
+
+    async atualizar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("produtos").updateOne(this.isAtivo = null,{
+                nome: this.nome,
+                descricao: this.descricao,
+                condicao: this.condicao,
+                isAtivo: this.isAtivo 
+            });
+
+            console.log("Produto atualizado:", result.insertedId);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao atualizar produto:", error);
+        }
+    }
 };
 
 module.exports = Produto;

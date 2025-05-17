@@ -29,6 +29,26 @@ class Pedido {
             console.log("Erro ao inserir pedido:", error);
         }
     }
+
+    async atualizar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("pedidos").updateOne(this.isAtivo = null,{
+                dataCompra: this.dataCompra,
+                dataEntrega: this.dataEntrega,
+                idProduto: this.idProduto,
+                idMetodoPagamento: this.idMetodoPagamento, 
+                status: this.status,
+                isAtivo: this.isAtivo 
+            });
+
+            console.log("Pedido atualizado:", result.insertedId);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao atualizar pedido:", error);
+        }
+    }
 };
 
 module.exports = Pedido;
