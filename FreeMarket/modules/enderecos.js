@@ -1,4 +1,6 @@
 const { connect } = require("../db");
+const { ObjectId } = require('mongodb');
+
 
 class Endereco {
     constructor(rua, numero, cep, logradouro, isAtivo) {
@@ -35,9 +37,28 @@ class Endereco {
 
             console.log("Endereços listados:", result);
             client.close();
+            return result;
 
         } catch (error) {
             console.log("Erro ao listar os endereços:", error);
+        }
+    }
+
+    async obterPorId(id) {
+        try {
+            const { db, client } = await connect();
+            const result = await db.collection("enderecos").findOne({ _id: new ObjectId(id) });
+
+            if (result) {
+                console.log("Endereço encontrado:", result);
+            } else {
+                console.log("Endereço não encontrado.");
+            }
+
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao obter endereço por ID:", error);
         }
     }
 

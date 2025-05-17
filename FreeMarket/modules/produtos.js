@@ -1,4 +1,6 @@
 const { connect } = require("../db");
+const { ObjectId } = require('mongodb');
+
 
 class Produto {
     constructor(nome, descricao, condicao, isAtivo) {
@@ -33,9 +35,28 @@ class Produto {
 
             console.log("Produtos listados:", result);
             client.close();
+            return result;
 
         } catch (error) {
             console.log("Erro ao listar os produtos:", error);
+        }
+    }
+
+    async obterPorId(id) {
+        try {
+            const { db, client } = await connect();
+            const result = await db.collection("produtos").findOne({ _id: new ObjectId(id) });
+
+            if (result) {
+                console.log("Produto encontrado:", result);
+            } else {
+                console.log("Produto não encontrado.");
+            }
+
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao obter produto por ID:", error);
         }
     }
 

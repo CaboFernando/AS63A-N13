@@ -1,4 +1,6 @@
 const { connect } = require("../db");
+const { ObjectId } = require('mongodb');
+
 
 class Pedido {
     constructor(dataCompra, dataEntrega, idProduto, idMetodoPagamento, status, isAtivo) {
@@ -37,9 +39,28 @@ class Pedido {
 
             console.log("Pedidos listados:", result);
             client.close();
+            return result;
 
         } catch (error) {
             console.log("Erro ao listar os pedidos:", error);
+        }
+    }
+
+    async obterPorId(id) {
+        try {
+            const { db, client } = await connect();
+            const result = await db.collection("pedidos").findOne({ _id: new ObjectId(id) });
+
+            if (result) {
+                console.log("Pedido encontrado:", result);
+            } else {
+                console.log("Pedido não encontrado.");
+            }
+
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao obter pedido por ID:", error);
         }
     }
 
