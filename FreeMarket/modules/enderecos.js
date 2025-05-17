@@ -12,14 +12,14 @@ class Endereco {
     }
 
     async inserir() {
-        try {            
+        try {
             const { db, client } = await connect();
             const result = await db.collection("enderecos").insertOne({
                 rua: this.rua,
                 numero: this.numero,
                 cep: this.cep,
-                logradouro: this.logradouro, 
-                isAtivo: this.isAtivo 
+                logradouro: this.logradouro,
+                isAtivo: this.isAtivo
             });
 
             console.log("Endereço inserido:", result.insertedId);
@@ -31,7 +31,7 @@ class Endereco {
     }
 
     async listar() {
-        try {            
+        try {
             const { db, client } = await connect();
             const result = await db.collection("enderecos").find().toArray();
 
@@ -80,23 +80,35 @@ class Endereco {
     }
 
     async atualizar() {
-        try {            
+        try {
             const { db, client } = await connect();
-            const result = await db.collection("enderecos").updateOne(this.isAtivo = null,{
-                rua: this.rua,
-                numero: this.numero,
-                cep: this.cep,
-                logradouro: this.logradouro, 
-                isAtivo: this.isAtivo 
-            });
+            const resultado = await db.collection("enderecos").updateOne(
+                { _id: new ObjectId(this._id) },
+                {
+                    $set: {
+                        rua: this.rua,
+                        numero: this.numero,
+                        complemento: this.complemento,
+                        bairro: this.bairro,
+                        cidade: this.cidade,
+                        estado: this.estado,
+                        cep: this.cep
+                    }
+                }
+            );
 
-            console.log("Endereço atualizado:", result.insertedId);
+            if (resultado.modifiedCount > 0) {
+                console.log("Endereço atualizado com sucesso.");
+            } else {
+                console.log("Endereço não encontrado para atualização.");
+            }
+
             client.close();
-
         } catch (error) {
             console.log("Erro ao atualizar endereço:", error);
         }
     }
+
 };
 
 module.exports = Endereco;
