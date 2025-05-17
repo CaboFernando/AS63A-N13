@@ -32,6 +32,19 @@ class Cliente {
         }
     }
 
+    async listar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("clientes").find().toArray();
+
+            console.log("Clientes listados:", result);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao listar os cliente:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();

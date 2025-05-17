@@ -26,6 +26,19 @@ class MetodoPagamento {
         }
     }
 
+    async listar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("metodoPagamentos").find().toArray();
+
+            console.log("Métodos de Pagamentos listados:", result);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao listar os métodos de pagamentos:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();

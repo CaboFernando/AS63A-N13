@@ -18,6 +18,20 @@ async function testarInsercao() {
     await cliente.inserir();
 }
 
+async function testarListar() {    
+    const endereco = new Endereco();
+    const produto = new Produto();
+    const metodoPagamento = new MetodoPagamento();
+    const pedido = new Pedido();
+    const cliente = new Cliente();
+
+    await endereco.listar();
+    await produto.listar();
+    await metodoPagamento.listar();
+    await pedido.listar();
+    await cliente.listar();
+}
+
 async function testarAtualizacao() {    
     const endereco = new Endereco();
     const produto = new Produto();
@@ -33,4 +47,5 @@ async function testarAtualizacao() {
 }
 
 //testarInsercao();
-testarAtualizacao();
+testarListar();
+//testarAtualizacao();
