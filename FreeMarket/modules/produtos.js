@@ -26,6 +26,19 @@ class Produto {
         }
     }
 
+    async listar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("produtos").find().toArray();
+
+            console.log("Produtos listados:", result);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao listar os produtos:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();

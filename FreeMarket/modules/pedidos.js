@@ -30,6 +30,19 @@ class Pedido {
         }
     }
 
+    async listar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("pedidos").find().toArray();
+
+            console.log("Pedidos listados:", result);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao listar os pedidos:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();

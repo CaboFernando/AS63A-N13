@@ -28,6 +28,19 @@ class Endereco {
         }
     }
 
+    async listar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("enderecos").find().toArray();
+
+            console.log("Endereços listados:", result);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao listar os endereços:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();
