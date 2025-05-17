@@ -19,14 +19,16 @@ async function testarInsercao() {
 }
 
 async function testarListar() {
-    const enderecos = await endereco.listar();
-    const produtos = await produto.listar();
-    const metodosPagamento = await metodoPagamento.listar();
-    const pedidos = await pedido.listar();
-    const clientes = await cliente.listar();
+    const enderecos = (await endereco.listar()).map(e => Object.assign(new Endereco(), e));
+    const produtos = (await produto.listar()).map(p => Object.assign(new Produto(), p));
+    const metodosPagamento = (await metodoPagamento.listar()).map(m => Object.assign(new MetodoPagamento(), m));
+    const pedidos = (await pedido.listar()).map(p => Object.assign(new Pedido(), p));
+    const clientes = (await cliente.listar()).map(c => Object.assign(new Cliente(), c));
 
     return { enderecos, produtos, metodosPagamento, pedidos, clientes };
 }
+
+
 
 async function testarObterPorId() {
     const { enderecos, produtos, metodosPagamento, pedidos, clientes } = await testarListar();
@@ -82,31 +84,31 @@ async function testarAtualizacao() {
     const { enderecos, produtos, metodosPagamento, pedidos, clientes } = await testarListar();
 
     if (enderecos.length > 0) {
-        const e = enderecos[0];
+        const e = enderecos[1];
         e.cidade = "Cidade Atualizada";
         await e.atualizar();
     }
 
     if (produtos.length > 0) {
-        const p = produtos[0];
+        const p = produtos[1];
         p.preco += 10;
         await p.atualizar();
     }
 
     if (metodosPagamento.length > 0) {
-        const mp = metodosPagamento[0];
+        const mp = metodosPagamento[1];
         mp.tipo = "Atualizado";
         await mp.atualizar();
     }
 
     if (pedidos.length > 0) {
-        const ped = pedidos[0];
+        const ped = pedidos[1];
         ped.status = "Entregue";
         await ped.atualizar();
     }
 
     if (clientes.length > 0) {
-        const c = clientes[0];
+        const c = clientes[1];
         c.telefone = "99999-8888";
         await c.atualizar();
     }
@@ -116,5 +118,5 @@ async function testarAtualizacao() {
 //testarInsercao();
 //testarListar();
 //testarObterPorId();
-//testarRemoverPorId();
 testarAtualizacao();
+//testarRemoverPorId();
