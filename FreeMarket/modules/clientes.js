@@ -82,27 +82,37 @@ class Cliente {
             console.log("Erro ao remover cliente por ID:", error);
         }
     }
-    
+
     async atualizar() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("clientes").updateOne(this.isAtivo = null, {
-                nome: this.nome,
-                email: this.email,
-                telefone: this.telefone,
-                documento: this.documento,
-                idPedido: this.idPedido,
-                idEndereco: this.idEndereco,
-                isAtivo: this.isAtivo
-            });
+            const resultado = await db.collection("clientes").updateOne(
+                { _id: new ObjectId(this._id) },
+                {
+                    $set: {
+                        nome: this.nome,
+                        email: this.email,
+                        telefone: this.telefone,
+                        documento: this.documento,
+                        idPedido: this.idPedido,
+                        idEndereco: this.idEndereco,
+                        isAtivo: this.isAtivo
+                    }
+                }
+            );
 
-            console.log("Cliente atualizado:", result.insertedId);
+            if (resultado.modifiedCount > 0) {
+                console.log("Cliente atualizado com sucesso.");
+            } else {
+                console.log("Cliente não encontrado para atualização.");
+            }
+
             client.close();
-
         } catch (error) {
-            console.log("Erro ao atualizado cliente:", error);
+            console.log("Erro ao atualizar cliente:", error);
         }
     }
+
 };
 
 module.exports = Cliente;

@@ -13,15 +13,15 @@ class Pedido {
     }
 
     async inserir() {
-        try {            
+        try {
             const { db, client } = await connect();
             const result = await db.collection("pedidos").insertOne({
                 dataCompra: this.dataCompra,
                 dataEntrega: this.dataEntrega,
                 idProduto: this.idProduto,
-                idMetodoPagamento: this.idMetodoPagamento, 
+                idMetodoPagamento: this.idMetodoPagamento,
                 status: this.status,
-                isAtivo: this.isAtivo 
+                isAtivo: this.isAtivo
             });
 
             console.log("Pedido inserido:", result.insertedId);
@@ -33,7 +33,7 @@ class Pedido {
     }
 
     async listar() {
-        try {            
+        try {
             const { db, client } = await connect();
             const result = await db.collection("pedidos").find().toArray();
 
@@ -82,24 +82,33 @@ class Pedido {
     }
 
     async atualizar() {
-        try {            
+        try {
             const { db, client } = await connect();
-            const result = await db.collection("pedidos").updateOne(this.isAtivo = null,{
-                dataCompra: this.dataCompra,
-                dataEntrega: this.dataEntrega,
-                idProduto: this.idProduto,
-                idMetodoPagamento: this.idMetodoPagamento, 
-                status: this.status,
-                isAtivo: this.isAtivo 
-            });
+            const resultado = await db.collection("pedidos").updateOne(
+                { _id: new ObjectId(this._id) },
+                {
+                    $set: {
+                        idCliente: this.idCliente,
+                        idProduto: this.idProduto,
+                        idMetodoPagamento: this.idMetodoPagamento,
+                        data: this.data,
+                        status: this.status
+                    }
+                }
+            );
 
-            console.log("Pedido atualizado:", result.insertedId);
+            if (resultado.modifiedCount > 0) {
+                console.log("Pedido atualizado com sucesso.");
+            } else {
+                console.log("Pedido não encontrado para atualização.");
+            }
+
             client.close();
-
         } catch (error) {
             console.log("Erro ao atualizar pedido:", error);
         }
     }
+
 };
 
 module.exports = Pedido;

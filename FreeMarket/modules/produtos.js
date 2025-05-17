@@ -11,13 +11,13 @@ class Produto {
     }
 
     async inserir() {
-        try {            
+        try {
             const { db, client } = await connect();
             const result = await db.collection("produtos").insertOne({
                 nome: this.nome,
                 descricao: this.descricao,
                 condicao: this.condicao,
-                isAtivo: this.isAtivo 
+                isAtivo: this.isAtivo
             });
 
             console.log("Produto inserido:", result.insertedId);
@@ -29,7 +29,7 @@ class Produto {
     }
 
     async listar() {
-        try {            
+        try {
             const { db, client } = await connect();
             const result = await db.collection("produtos").find().toArray();
 
@@ -78,22 +78,31 @@ class Produto {
     }
 
     async atualizar() {
-        try {            
+        try {
             const { db, client } = await connect();
-            const result = await db.collection("produtos").updateOne(this.isAtivo = null,{
-                nome: this.nome,
-                descricao: this.descricao,
-                condicao: this.condicao,
-                isAtivo: this.isAtivo 
-            });
+            const resultado = await db.collection("produtos").updateOne(
+                { _id: new ObjectId(this._id) },
+                {
+                    $set: {
+                        nome: this.nome,
+                        descricao: this.descricao,
+                        preco: this.preco
+                    }
+                }
+            );
 
-            console.log("Produto atualizado:", result.insertedId);
+            if (resultado.modifiedCount > 0) {
+                console.log("Produto atualizado com sucesso.");
+            } else {
+                console.log("Produto não encontrado para atualização.");
+            }
+
             client.close();
-
         } catch (error) {
             console.log("Erro ao atualizar produto:", error);
         }
     }
+
 };
 
 module.exports = Produto;
