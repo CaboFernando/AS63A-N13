@@ -60,6 +60,23 @@ class MetodoPagamento {
         }
     }
 
+        async removerPorId(id) {
+        try {
+            const { db, client } = await connect();
+            const resultado = await db.collection("metodoPagamentos").deleteOne({ _id: new ObjectId(id) });
+
+            if (resultado.deletedCount > 0) {
+                console.log("Método de Pagamento removido com sucesso.");
+            } else {
+                console.log("Cliente não método de pagamento para remoção.");
+            }
+
+            client.close();
+        } catch (error) {
+            console.log("Erro ao remover método de pagamento por ID:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();

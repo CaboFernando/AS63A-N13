@@ -62,6 +62,23 @@ class Endereco {
         }
     }
 
+    async removerPorId(id) {
+        try {
+            const { db, client } = await connect();
+            const resultado = await db.collection("enderecos").deleteOne({ _id: new ObjectId(id) });
+
+            if (resultado.deletedCount > 0) {
+                console.log("Endereço removido com sucesso.");
+            } else {
+                console.log("Endereço não encontrado para remoção.");
+            }
+
+            client.close();
+        } catch (error) {
+            console.log("Erro ao remover endereço por ID:", error);
+        }
+    }
+
     async atualizar() {
         try {            
             const { db, client } = await connect();

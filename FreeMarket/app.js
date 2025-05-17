@@ -52,6 +52,31 @@ async function testarObterPorId() {
   }
 }
 
+async function testarRemoverPorId() {
+    const { enderecos, produtos, metodosPagamento, pedidos, clientes } = await testarListar();
+
+    if (clientes.length > 0) {
+        await cliente.removerPorId(clientes[0]._id);
+    }
+
+    if (pedidos.length > 0) {
+        await pedido.removerPorId(pedidos[0]._id);
+    }
+
+    if (metodosPagamento.length > 0) {
+        await metodoPagamento.removerPorId(metodosPagamento[0]._id);
+    }
+
+    if (produtos.length > 0) {
+        await produto.removerPorId(produtos[0]._id);
+    }
+
+    if (enderecos.length > 0) {
+        await endereco.removerPorId(enderecos[0]._id);
+    }
+}
+
+
 
 async function testarAtualizacao() {
     await endereco.atualizar();
@@ -63,5 +88,6 @@ async function testarAtualizacao() {
 
 //testarInsercao();
 //testarListar();
-testarObterPorId();
+//testarObterPorId();
+testarRemoverPorId();
 //testarAtualizacao();
