@@ -25,6 +25,24 @@ class MetodoPagamento {
             console.log("Erro ao inserir Método de Pagamento:", error);
         }
     }
+
+    async atualizar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("metodoPagamentos").updateOne(this.isAtivo = null,{
+                tipo: this.tipo,
+                dados: this.dados,
+                status: this.status,
+                isAtivo: this.isAtivo 
+            });
+
+            console.log("Método de Pagamento atualizado:", result.insertedId);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao atualizar Método de Pagamento:", error);
+        }
+    }
 };
 
 module.exports = MetodoPagamento;

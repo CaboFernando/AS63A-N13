@@ -27,6 +27,25 @@ class Endereco {
             console.log("Erro ao inserir endereço:", error);
         }
     }
+
+    async atualizar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("enderecos").updateOne(this.isAtivo = null,{
+                rua: this.rua,
+                numero: this.numero,
+                cep: this.cep,
+                logradouro: this.logradouro, 
+                isAtivo: this.isAtivo 
+            });
+
+            console.log("Endereço atualizado:", result.insertedId);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao atualizar endereço:", error);
+        }
+    }
 };
 
 module.exports = Endereco;

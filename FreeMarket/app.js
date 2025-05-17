@@ -4,13 +4,7 @@ const MetodoPagamento = require("./modules/metodoPagamentos");
 const Pedido = require("./modules/pedidos");
 const Produto = require("./modules/produtos");
 
-async function testarInsercao() {
-    //endereco
-    //produto
-    //metodoPagamento
-    //pedido
-    //cliente
-
+async function testarInsercao() {    
     const endereco = new Endereco();
     const produto = new Produto();
     const metodoPagamento = new MetodoPagamento();
@@ -24,4 +18,19 @@ async function testarInsercao() {
     await cliente.inserir();
 }
 
-testarInsercao();
+async function testarAtualizacao() {    
+    const endereco = new Endereco();
+    const produto = new Produto();
+    const metodoPagamento = new MetodoPagamento();
+    const pedido = new Pedido();
+    const cliente = new Cliente();
+
+    await endereco.atualizar();
+    await produto.atualizar();
+    await metodoPagamento.atualizar();
+    await pedido.atualizar();
+    await cliente.atualizar();
+}
+
+//testarInsercao();
+testarAtualizacao();

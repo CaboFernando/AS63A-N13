@@ -31,6 +31,27 @@ class Cliente {
             console.log("Erro ao inserir cliente:", error);
         }
     }
+
+    async atualizar() {
+        try {            
+            const { db, client } = await connect();
+            const result = await db.collection("clientes").updateOne(this.isAtivo = null,{
+                nome: this.nome,
+                email: this.email,
+                telefone: this.telefone,
+                documento: this.documento, 
+                idPedido: this.idPedido,
+                idEndereco: this.idEndereco,
+                isAtivo: this.isAtivo 
+            });
+
+            console.log("Cliente atualizado:", result.insertedId);
+            client.close();
+
+        } catch (error) {
+            console.log("Erro ao atualizado cliente:", error);
+        }
+    }
 };
 
 module.exports = Cliente;
