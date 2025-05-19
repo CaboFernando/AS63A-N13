@@ -1,8 +1,8 @@
-const Cliente = require("./modules/clientes");
-const Endereco = require("./modules/enderecos");
-const MetodoPagamento = require("./modules/metodoPagamentos");
-const Pedido = require("./modules/pedidos");
-const Produto = require("./modules/produtos");
+const Cliente = require("./models/clientes");
+const Endereco = require("./models/enderecos");
+const MetodoPagamento = require("./models/metodoPagamentos");
+const Pedido = require("./models/pedidos");
+const Produto = require("./models/produtos");
 
 const endereco = new Endereco();
 const produto = new Produto();
@@ -116,7 +116,7 @@ async function testarAtualizacao() {
 
 
 //testarInsercao();
-//testarListar();
+testarListar();
 //testarObterPorId();
-testarAtualizacao();
+//testarAtualizacao();
 //testarRemoverPorId();
