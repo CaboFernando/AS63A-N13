@@ -17,7 +17,7 @@ class Cliente {
     async inserir() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("clientes").insertOne({
+            const resultado = await db.collection("clientes").insertOne({
                 nome: this.nome,
                 email: this.email,
                 telefone: this.telefone,
@@ -27,7 +27,7 @@ class Cliente {
                 isAtivo: this.isAtivo
             });
 
-            console.log("Cliente inserido:", result.insertedId);
+            console.log("Cliente inserido:", resultado.insertedId);
             client.close();
 
         } catch (error) {
@@ -38,11 +38,12 @@ class Cliente {
     async listar() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("clientes").find().toArray();
+            const clientes = await db.collection("clientes").find().toArray();
 
-            console.log("Clientes listados:", result);
+            console.log("Clientes listados:", clientes);
             client.close();
-            return result;
+
+            return clientes;
 
         } catch (error) {
             Logger.log("Erro ao listar os clientes!" + error);
@@ -52,14 +53,9 @@ class Cliente {
     async obterPorId(id) {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("clientes").findOne({ _id: new ObjectId(id) });
-
-            if (result) {
-                console.log("Cliente encontrado:", result);
-            } else {
-                console.log("Cliente não encontrado.");
-            }
-
+            const cliente = await db.collection("clientes").findOne({ _id: new ObjectId(id) });
+            
+            cliente ? console.log("Cliente encontrado:", cliente) : console.log("Cliente não encontrado.");
             client.close();
 
         } catch (error) {
@@ -72,45 +68,27 @@ class Cliente {
             const { db, client } = await connect();
             const resultado = await db.collection("clientes").deleteOne({ _id: new ObjectId(id) });
 
-            if (resultado.deletedCount > 0) {
-                console.log("Cliente removido com sucesso.");
-            } else {
-                console.log("Cliente não encontrado para remoção.");
-            }
-
+            console.log(resultado.deletedCount > 0 ? "Cliente removido com sucesso." : "Cliente não encontrado para remoção.");
             client.close();
+
         } catch (error) {
             Logger.log("Erro ao remover cliente por ID!" + error);
         }
     }
 
-    async atualizar() {
+    async atualizarCliente(filtro, novosDados) {
         try {
             const { db, client } = await connect();
-            const resultado = await db.collection("clientes").updateOne(
-                { _id: new ObjectId(this._id) },
-                {
-                    $set: {
-                        nome: this.nome,
-                        email: this.email,
-                        telefone: this.telefone,
-                        documento: this.documento,
-                        idPedido: this.idPedido,
-                        idEndereco: this.idEndereco,
-                        isAtivo: this.isAtivo
-                    }
-                }
-            );
 
-            if (resultado.modifiedCount > 0) {
-                console.log("Cliente atualizado com sucesso.");
-            } else {
-                console.log("Cliente não encontrado para atualização.");
-            }
+            const resultado = await db.collection("clientes").updateOne(filtro, {
+                $set: novosDados,
+            });
 
+            console.log(resultado.modifiedCount > 0 ? "Cliente atualizado com sucesso." : "Cliente não encontrado para atualização.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao atualizar cliente!" + error);
+            Logger.log("Erro ao atualizar cliente! " + error);
         }
     }
 

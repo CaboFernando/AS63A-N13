@@ -1,6 +1,6 @@
 const { connect } = require("../config/db");
 const { ObjectId } = require('mongodb');
-
+const Logger = require("../utils/Logger");
 
 class Endereco {
     constructor(rua, numero, cep, logradouro, isAtivo) {
@@ -14,7 +14,7 @@ class Endereco {
     async inserir() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("enderecos").insertOne({
+            const resultado = await db.collection("enderecos").insertOne({
                 rua: this.rua,
                 numero: this.numero,
                 cep: this.cep,
@@ -22,43 +22,39 @@ class Endereco {
                 isAtivo: this.isAtivo
             });
 
-            console.log("Endereço inserido:", result.insertedId);
+            console.log("Endereço inserido:", resultado.insertedId);
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao inserir endereço!" + error);
+            Logger.log("Erro ao inserir endereço! " + error);
         }
     }
 
     async listar() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("enderecos").find().toArray();
+            const enderecos = await db.collection("enderecos").find().toArray();
 
-            console.log("Endereços listados:", result);
+            console.log("Endereços listados:", enderecos);
             client.close();
-            return result;
+
+            return enderecos;
 
         } catch (error) {
-            Logger.log("Erro ao listar os endereços!" + error);
+            Logger.log("Erro ao listar endereços! " + error);
         }
     }
 
     async obterPorId(id) {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("enderecos").findOne({ _id: new ObjectId(id) });
+            const endereco = await db.collection("enderecos").findOne({ _id: new ObjectId(id) });
 
-            if (result) {
-                console.log("Endereço encontrado:", result);
-            } else {
-                console.log("Endereço não encontrado.");
-            }
-
+            endereco ? console.log("Endereço encontrado:", endereco) : console.log("Endereço não encontrado.");
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao obter endereço por ID!" + error);
+            Logger.log("Erro ao obter endereço por ID! " + error);
         }
     }
 
@@ -67,48 +63,26 @@ class Endereco {
             const { db, client } = await connect();
             const resultado = await db.collection("enderecos").deleteOne({ _id: new ObjectId(id) });
 
-            if (resultado.deletedCount > 0) {
-                console.log("Endereço removido com sucesso.");
-            } else {
-                console.log("Endereço não encontrado para remoção.");
-            }
-
+            console.log(resultado.deletedCount > 0 ? "Endereço removido com sucesso." : "Endereço não encontrado para remoção.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao remover endereço por ID!" + error);
+            Logger.log("Erro ao remover endereço por ID! " + error);
         }
     }
 
-    async atualizar() {
+    async atualizar(filtro, novosDados) {
         try {
             const { db, client } = await connect();
-            const resultado = await db.collection("enderecos").updateOne(
-                { _id: new ObjectId(this._id) },
-                {
-                    $set: {
-                        rua: this.rua,
-                        numero: this.numero,
-                        complemento: this.complemento,
-                        bairro: this.bairro,
-                        cidade: this.cidade,
-                        estado: this.estado,
-                        cep: this.cep
-                    }
-                }
-            );
+            const resultado = await db.collection("enderecos").updateOne(filtro, { $set: novosDados });
 
-            if (resultado.modifiedCount > 0) {
-                console.log("Endereço atualizado com sucesso.");
-            } else {
-                console.log("Endereço não encontrado para atualização.");
-            }
-
+            console.log(resultado.modifiedCount > 0 ? "Endereço atualizado com sucesso!" : "Endereço não encontrado para atualização.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao atualizar endereço!" + error);
+            Logger.log("Erro ao atualizar endereço! " + error);
         }
     }
-
-};
+}
 
 module.exports = Endereco;

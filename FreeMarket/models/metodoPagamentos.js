@@ -1,6 +1,6 @@
 const { connect } = require("../config/db");
 const { ObjectId } = require('mongodb');
-
+const Logger = require("../utils/Logger");
 
 class MetodoPagamento {
     constructor(tipo, dados, status, isAtivo) {
@@ -13,50 +13,46 @@ class MetodoPagamento {
     async inserir() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("metodoPagamentos").insertOne({
+            const resultado = await db.collection("metodoPagamentos").insertOne({
                 tipo: this.tipo,
                 dados: this.dados,
                 status: this.status,
                 isAtivo: this.isAtivo
             });
 
-            console.log("Método de Pagamento inserido:", result.insertedId);
+            console.log("Método de Pagamento inserido:", resultado.insertedId);
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao inserir Método de Pagamento!" + error);
+            Logger.log("Erro ao inserir método de pagamento! " + error);
         }
     }
 
     async listar() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("metodoPagamentos").find().toArray();
+            const metodos = await db.collection("metodoPagamentos").find().toArray();
 
-            console.log("Métodos de Pagamentos listados:", result);
+            console.log("Métodos de Pagamentos listados:", metodos);
             client.close();
-            return result;
+
+            return metodos;
 
         } catch (error) {
-            Logger.log("Erro ao listar os Método de Pagamento!" + error);
+            Logger.log("Erro ao listar métodos de pagamento! " + error);
         }
     }
 
     async obterPorId(id) {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(id) });
+            const metodo = await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(id) });
 
-            if (result) {
-                console.log("Método de Pagamento encontrado:", result);
-            } else {
-                console.log("Método de Pagamento não encontrado.");
-            }
-
+            metodo ? console.log("Método de Pagamento encontrado:", metodo) : console.log("Método de Pagamento não encontrado.");
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao obter método de pagamento por ID!" + error);
+            Logger.log("Erro ao obter método de pagamento por ID! " + error);
         }
     }
 
@@ -65,43 +61,26 @@ class MetodoPagamento {
             const { db, client } = await connect();
             const resultado = await db.collection("metodoPagamentos").deleteOne({ _id: new ObjectId(id) });
 
-            if (resultado.deletedCount > 0) {
-                console.log("Método de Pagamento removido com sucesso.");
-            } else {
-                console.log("Cliente não método de pagamento para remoção.");
-            }
-
+            console.log(resultado.deletedCount > 0 ? "Método de pagamento removido com sucesso." : "Método de pagamento não encontrado para remoção.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao remover método de pagamento por ID!" + error);
+            Logger.log("Erro ao remover método de pagamento por ID! " + error);
         }
     }
 
-    async atualizar() {
+    async atualizar(filtro, novosDados) {
         try {
             const { db, client } = await connect();
-            const resultado = await db.collection("metodoPagamentos").updateOne(
-                { _id: new ObjectId(this._id) },
-                {
-                    $set: {
-                        tipo: this.tipo,
-                        detalhes: this.detalhes
-                    }
-                }
-            );
+            const resultado = await db.collection("metodoPagamentos").updateOne(filtro, { $set: novosDados });
 
-            if (resultado.modifiedCount > 0) {
-                console.log("Método de pagamento atualizado com sucesso.");
-            } else {
-                console.log("Método de pagamento não encontrado para atualização.");
-            }
-
+            console.log(resultado.modifiedCount > 0 ? "Método de pagamento atualizado com sucesso!" : "Método de pagamento não encontrado para atualização.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao atualizar método de pagamento!" + error);
+            Logger.log("Erro ao atualizar método de pagamento! " + error);
         }
     }
-
-};
+}
 
 module.exports = MetodoPagamento;

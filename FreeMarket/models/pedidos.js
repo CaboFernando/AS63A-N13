@@ -1,6 +1,6 @@
 const { connect } = require("../config/db");
 const { ObjectId } = require('mongodb');
-
+const Logger = require("../utils/Logger");
 
 class Pedido {
     constructor(dataCompra, dataEntrega, idProduto, idMetodoPagamento, status, isAtivo) {
@@ -15,7 +15,7 @@ class Pedido {
     async inserir() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("pedidos").insertOne({
+            const resultado = await db.collection("pedidos").insertOne({
                 dataCompra: this.dataCompra,
                 dataEntrega: this.dataEntrega,
                 idProduto: this.idProduto,
@@ -23,44 +23,40 @@ class Pedido {
                 status: this.status,
                 isAtivo: this.isAtivo
             });
-
-            console.log("Pedido inserido:", result.insertedId);
+            
+            console.log("Pedido inserido:", resultado.insertedId);
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao inserir pedido!" + error);
+            Logger.log("Erro ao inserir pedido! " + error);
         }
     }
 
     async listar() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("pedidos").find().toArray();
+            const pedidos = await db.collection("pedidos").find().toArray();
 
-            console.log("Pedidos listados:", result);
+            console.log("Pedidos listados:", pedidos);
             client.close();
-            return result;
+
+            return pedidos;
 
         } catch (error) {
-            Logger.log("Erro ao listar os pedidos!" + error);
+            Logger.log("Erro ao listar pedidos! " + error);
         }
     }
 
     async obterPorId(id) {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("pedidos").findOne({ _id: new ObjectId(id) });
+            const pedido = await db.collection("pedidos").findOne({ _id: new ObjectId(id) });
 
-            if (result) {
-                console.log("Pedido encontrado:", result);
-            } else {
-                console.log("Pedido não encontrado.");
-            }
-
+            pedido ? console.log("Pedido encontrado:", pedido) : console.log("Pedido não encontrado.");
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao obter pedido por ID!" + error);
+            Logger.log("Erro ao obter pedido por ID! " + error);
         }
     }
 
@@ -69,46 +65,26 @@ class Pedido {
             const { db, client } = await connect();
             const resultado = await db.collection("pedidos").deleteOne({ _id: new ObjectId(id) });
 
-            if (resultado.deletedCount > 0) {
-                console.log("Pedido removido com sucesso.");
-            } else {
-                console.log("Pedido não encontrado para remoção.");
-            }
-
+            console.log(resultado.deletedCount > 0 ? "Pedido removido com sucesso." : "Pedido não encontrado para remoção.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao remover pedido por ID!" + error);
+            Logger.log("Erro ao remover pedido por ID! " + error);
         }
     }
 
-    async atualizar() {
+    async atualizar(filtro, novosDados) {
         try {
             const { db, client } = await connect();
-            const resultado = await db.collection("pedidos").updateOne(
-                { _id: new ObjectId(this._id) },
-                {
-                    $set: {
-                        idCliente: this.idCliente,
-                        idProduto: this.idProduto,
-                        idMetodoPagamento: this.idMetodoPagamento,
-                        data: this.data,
-                        status: this.status
-                    }
-                }
-            );
+            const resultado = await db.collection("pedidos").updateOne(filtro, { $set: novosDados });
 
-            if (resultado.modifiedCount > 0) {
-                console.log("Pedido atualizado com sucesso.");
-            } else {
-                console.log("Pedido não encontrado para atualização.");
-            }
-
+            console.log(resultado.modifiedCount > 0 ? "Pedido atualizado com sucesso!" : "Pedido não encontrado para atualização.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao atualizar pedido!" + error);
+            Logger.log("Erro ao atualizar pedido! " + error);
         }
     }
-
-};
+}
 
 module.exports = Pedido;

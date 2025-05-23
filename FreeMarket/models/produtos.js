@@ -1,6 +1,6 @@
 const { connect } = require("../config/db");
 const { ObjectId } = require('mongodb');
-
+const Logger = require("../utils/Logger");
 
 class Produto {
     constructor(nome, descricao, condicao, isAtivo) {
@@ -13,50 +13,46 @@ class Produto {
     async inserir() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("produtos").insertOne({
+            const resultado = await db.collection("produtos").insertOne({
                 nome: this.nome,
                 descricao: this.descricao,
                 condicao: this.condicao,
                 isAtivo: this.isAtivo
             });
 
-            console.log("Produto inserido:", result.insertedId);
+            console.log("Produto inserido:", resultado.insertedId);
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao inserir produto!" + error);
+            Logger.log("Erro ao inserir produto! " + error);
         }
     }
 
     async listar() {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("produtos").find().toArray();
+            const produtos = await db.collection("produtos").find().toArray();
 
-            console.log("Produtos listados:", result);
+            console.log("Produtos listados:", produtos);
             client.close();
-            return result;
+
+            return produtos;
 
         } catch (error) {
-            Logger.log("Erro ao listar os produtos!" + error);
+            Logger.log("Erro ao listar produtos! " + error);
         }
     }
 
     async obterPorId(id) {
         try {
             const { db, client } = await connect();
-            const result = await db.collection("produtos").findOne({ _id: new ObjectId(id) });
+            const produto = await db.collection("produtos").findOne({ _id: new ObjectId(id) });
 
-            if (result) {
-                console.log("Produto encontrado:", result);
-            } else {
-                console.log("Produto não encontrado.");
-            }
-
+            produto ? console.log("Produto encontrado:", produto) : console.log("Produto não encontrado.");
             client.close();
 
         } catch (error) {
-            Logger.log("Erro ao obter produto por ID!" + error);
+            Logger.log("Erro ao obter produto por ID! " + error);
         }
     }
 
@@ -64,45 +60,27 @@ class Produto {
         try {
             const { db, client } = await connect();
             const resultado = await db.collection("produtos").deleteOne({ _id: new ObjectId(id) });
-
-            if (resultado.deletedCount > 0) {
-                console.log("Produto removido com sucesso.");
-            } else {
-                console.log("Produto não encontrado para remoção.");
-            }
-
+            
+            console.log(resultado.deletedCount > 0 ? "Produto removido com sucesso." : "Produto não encontrado para remoção.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao remover produto por ID!" + error);
+            Logger.log("Erro ao remover produto por ID! " + error);
         }
     }
 
-    async atualizar() {
+    async atualizar(filtro, novosDados) {
         try {
             const { db, client } = await connect();
-            const resultado = await db.collection("produtos").updateOne(
-                { _id: new ObjectId(this._id) },
-                {
-                    $set: {
-                        nome: this.nome,
-                        descricao: this.descricao,
-                        preco: this.preco
-                    }
-                }
-            );
+            const resultado = await db.collection("produtos").updateOne(filtro, { $set: novosDados });
 
-            if (resultado.modifiedCount > 0) {
-                console.log("Produto atualizado com sucesso.");
-            } else {
-                console.log("Produto não encontrado para atualização.");
-            }
-
+            console.log(resultado.modifiedCount > 0 ? "Produto atualizado com sucesso!" : "Produto não encontrado para atualização.");
             client.close();
+
         } catch (error) {
-            Logger.log("Erro ao atualizar produto!" + error);
+            Logger.log("Erro ao atualizar produto! " + error);
         }
     }
-
-};
+}
 
 module.exports = Produto;
