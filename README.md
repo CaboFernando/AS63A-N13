@@ -7,4 +7,11 @@ Repositório destinado a disciplina de Programação Web Back-End
 - Aula 4 - Intrudução ao Node.Js pt 1
 - Aula 5 - Intrudução ao Node.Js pt 2
 - Aula 6 - Introdução ao MongoDB
-- Aula 6 - Node + MongoDb
+- Aula 7 - Node + MongoDb
+- Aula 8 - CRUD completo
+
+
+- Comando usados em toda aula:
+
+npm init -> para carregar a node_modules e gerar o package.json
+npm install mongodb -> para gerar o package-lock.json
