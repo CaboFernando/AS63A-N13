@@ -28,7 +28,7 @@ class Pedido {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao inserir pedido:", error);
+            Logger.log("Erro ao inserir pedido!" + error);
         }
     }
 
@@ -42,7 +42,7 @@ class Pedido {
             return result;
 
         } catch (error) {
-            console.log("Erro ao listar os pedidos:", error);
+            Logger.log("Erro ao listar os pedidos!" + error);
         }
     }
 
@@ -60,7 +60,7 @@ class Pedido {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao obter pedido por ID:", error);
+            Logger.log("Erro ao obter pedido por ID!" + error);
         }
     }
 
@@ -77,7 +77,7 @@ class Pedido {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao remover pedido por ID:", error);
+            Logger.log("Erro ao remover pedido por ID!" + error);
         }
     }
 
@@ -105,7 +105,7 @@ class Pedido {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao atualizar pedido:", error);
+            Logger.log("Erro ao atualizar pedido!" + error);
         }
     }
 
