@@ -1,0 +1,2 @@
+[2025-05-23T01:12:11.150Z] - Erro ao inserir usuário!MongoServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-05-23T01:16:19.887Z] - Erro ao inserir usuário!MongoServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
