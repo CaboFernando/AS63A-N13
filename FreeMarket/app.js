@@ -78,45 +78,103 @@ async function testarRemoverPorId() {
     }
 }
 
-
-
-async function testarAtualizacao() {
-    const { enderecos, produtos, metodosPagamento, pedidos, clientes } = await testarListar();
-
-    if (enderecos.length > 0) {
-        const e = enderecos[1];
-        e.cidade = "Cidade Atualizada";
-        await e.atualizar();
-    }
-
-    if (produtos.length > 0) {
-        const p = produtos[1];
-        p.preco += 10;
-        await p.atualizar();
-    }
-
-    if (metodosPagamento.length > 0) {
-        const mp = metodosPagamento[1];
-        mp.tipo = "Atualizado";
-        await mp.atualizar();
-    }
-
-    if (pedidos.length > 0) {
-        const ped = pedidos[1];
-        ped.status = "Entregue";
-        await ped.atualizar();
-    }
-
+async function testarAtualizacao() {    
+    const clientes = (await cliente.listar()).map(c => Object.assign(new Cliente(), c));
     if (clientes.length > 0) {
-        const c = clientes[1];
-        c.telefone = "99999-8888";
-        await c.atualizar();
+        const clienteExistente = clientes[0];
+        const filtro = { _id: clienteExistente._id };
+
+        const novosDados = {
+            nome: "Nome Atualizado",
+            email: "clienteatualizado@example.com",
+            telefone: "99999-8888",
+            documento: "123.456.789-00",
+            idPedido: clienteExistente.idPedido,
+            idEndereco: clienteExistente.idEndereco,
+            isAtivo: true
+        };
+
+        await cliente.atualizarCliente(filtro, novosDados);
+    }
+
+    const enderecos = (await endereco.listar()).map(e => Object.assign(new Endereco(), e));
+    if (enderecos.length > 0) {
+        const enderecoExistente = enderecos[0];
+        const filtro = { _id: enderecoExistente._id };
+
+        const novosDados = {
+            rua: "Rua Atualizada",
+            numero: "456",
+            cep: "12345-678",
+            logradouro: "Logradouro Atualizado",
+            bairro: "Bairro Atualizado",
+            cidade: "Cidade Atualizada",
+            complemento: "Apto 202",
+            estado: "SP",
+            isAtivo: true
+        };
+
+        await endereco.atualizar(filtro, novosDados);
+    }
+
+    const metodos = (await metodoPagamento.listar()).map(m => Object.assign(new MetodoPagamento(), m));
+    if (metodos.length > 0) {
+        const metodoExistente = metodos[0];
+        const filtro = { _id: metodoExistente._id };
+
+        const novosDados = {
+            tipo: "Crédito",
+            dados: "Cartão Visa",
+            status: "ativo",
+            detalhes: "Parcela única",
+            isAtivo: true
+        };
+
+        await metodoPagamento.atualizar(filtro, novosDados);
+    }
+
+    const pedidos = (await pedido.listar()).map(p => Object.assign(new Pedido(), p));
+    if (pedidos.length > 0) {
+        const pedidoExistente = pedidos[0];
+        const filtro = { _id: pedidoExistente._id };
+
+        const novosDados = {
+            dataCompra: new Date(),
+            dataEntrega: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+            idProduto: pedidoExistente.idProduto,
+            idMetodoPagamento: pedidoExistente.idMetodoPagamento,
+            idCliente: pedidoExistente.idCliente,
+            status: "entregue",
+            data: new Date(),
+            isAtivo: true
+        };
+
+        await pedido.atualizar(filtro, novosDados);
+    }
+
+    const produtos = (await produto.listar()).map(p => Object.assign(new Produto(), p));
+    if (produtos.length > 0) {
+        const produtoExistente = produtos[0];
+        const filtro = { _id: produtoExistente._id };
+
+        const novosDados = {
+            nome: "Produto Atualizado",
+            descricao: "Descrição atualizada do produto",
+            condicao: "novo",
+            preco: 199.99,
+            isAtivo: true
+        };
+
+        await produto.atualizar(filtro, novosDados);
     }
 }
 
 
+
+
+
 //testarInsercao();
-testarListar();
+//testarListar();
 //testarObterPorId();
-//testarAtualizacao();
 //testarRemoverPorId();
+testarAtualizacao();

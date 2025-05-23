@@ -1,1 +1,5 @@
 [2025-05-23T18:38:29.128Z] - Teste de log no sistema
+[2025-05-23T19:45:13.338Z] - Erro ao atualizar endereço! MongoInvalidArgumentError: Selector must be a valid JavaScript object
+[2025-05-23T19:45:13.344Z] - Erro ao atualizar produto! MongoInvalidArgumentError: Selector must be a valid JavaScript object
+[2025-05-23T19:45:13.349Z] - Erro ao atualizar método de pagamento! MongoInvalidArgumentError: Selector must be a valid JavaScript object
+[2025-05-23T19:45:13.356Z] - Erro ao atualizar pedido! MongoInvalidArgumentError: Selector must be a valid JavaScript object
