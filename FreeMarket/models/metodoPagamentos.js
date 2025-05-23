@@ -24,7 +24,7 @@ class MetodoPagamento {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao inserir Método de Pagamento:", error);
+            Logger.log("Erro ao inserir Método de Pagamento!" + error);
         }
     }
 
@@ -38,7 +38,7 @@ class MetodoPagamento {
             return result;
 
         } catch (error) {
-            console.log("Erro ao listar os métodos de pagamentos:", error);
+            Logger.log("Erro ao listar os Método de Pagamento!" + error);
         }
     }
 
@@ -56,7 +56,7 @@ class MetodoPagamento {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao obter método de pagamento por ID:", error);
+            Logger.log("Erro ao obter método de pagamento por ID!" + error);
         }
     }
 
@@ -73,7 +73,7 @@ class MetodoPagamento {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao remover método de pagamento por ID:", error);
+            Logger.log("Erro ao remover método de pagamento por ID!" + error);
         }
     }
 
@@ -98,7 +98,7 @@ class MetodoPagamento {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao atualizar método de pagamento:", error);
+            Logger.log("Erro ao atualizar método de pagamento!" + error);
         }
     }
 

@@ -26,7 +26,7 @@ class Endereco {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao inserir endereço:", error);
+            Logger.log("Erro ao inserir endereço!" + error);
         }
     }
 
@@ -40,7 +40,7 @@ class Endereco {
             return result;
 
         } catch (error) {
-            console.log("Erro ao listar os endereços:", error);
+            Logger.log("Erro ao listar os endereços!" + error);
         }
     }
 
@@ -58,7 +58,7 @@ class Endereco {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao obter endereço por ID:", error);
+            Logger.log("Erro ao obter endereço por ID!" + error);
         }
     }
 
@@ -75,7 +75,7 @@ class Endereco {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao remover endereço por ID:", error);
+            Logger.log("Erro ao remover endereço por ID!" + error);
         }
     }
 
@@ -105,7 +105,7 @@ class Endereco {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao atualizar endereço:", error);
+            Logger.log("Erro ao atualizar endereço!" + error);
         }
     }
 

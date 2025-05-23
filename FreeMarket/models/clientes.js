@@ -1,5 +1,6 @@
 const { connect } = require("../config/db");
 const { ObjectId } = require('mongodb');
+const Logger = require("../utils/Logger");
 
 
 class Cliente {
@@ -30,7 +31,7 @@ class Cliente {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao inserir cliente:", error);
+            Logger.log("Erro ao inserir cliente!" + error);
         }
     }
 
@@ -44,7 +45,7 @@ class Cliente {
             return result;
 
         } catch (error) {
-            console.log("Erro ao listar os cliente:", error);
+            Logger.log("Erro ao listar os clientes!" + error);
         }
     }
 
@@ -62,7 +63,7 @@ class Cliente {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao obter cliente por ID:", error);
+            Logger.log("Erro ao obter cliente po ID!" + error);
         }
     }
 
@@ -79,7 +80,7 @@ class Cliente {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao remover cliente por ID:", error);
+            Logger.log("Erro ao remover cliente por ID!" + error);
         }
     }
 
@@ -109,7 +110,7 @@ class Cliente {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao atualizar cliente:", error);
+            Logger.log("Erro ao atualizar cliente!" + error);
         }
     }
 

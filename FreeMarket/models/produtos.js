@@ -24,7 +24,7 @@ class Produto {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao inserir produto:", error);
+            Logger.log("Erro ao inserir produto!" + error);
         }
     }
 
@@ -38,7 +38,7 @@ class Produto {
             return result;
 
         } catch (error) {
-            console.log("Erro ao listar os produtos:", error);
+            Logger.log("Erro ao listar os produtos!" + error);
         }
     }
 
@@ -56,7 +56,7 @@ class Produto {
             client.close();
 
         } catch (error) {
-            console.log("Erro ao obter produto por ID:", error);
+            Logger.log("Erro ao obter produto por ID!" + error);
         }
     }
 
@@ -73,7 +73,7 @@ class Produto {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao remover produto por ID:", error);
+            Logger.log("Erro ao remover produto por ID!" + error);
         }
     }
 
@@ -99,7 +99,7 @@ class Produto {
 
             client.close();
         } catch (error) {
-            console.log("Erro ao atualizar produto:", error);
+            Logger.log("Erro ao atualizar produto!" + error);
         }
     }
 
