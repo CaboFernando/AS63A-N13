@@ -11,7 +11,7 @@ Repositório destinado a disciplina de Programação Web Back-End
 - Aula 8 - CRUD completo
 
 
-- Comando usados em toda aula:
+## Comando usados em toda aula:
 
-npm init -> para carregar a node_modules e gerar o package.json
-npm install mongodb -> para gerar o package-lock.json
+- npm init -> para carregar a node_modules e gerar o package.json
+- npm install mongodb -> para gerar o package-lock.json

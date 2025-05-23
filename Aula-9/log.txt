@@ -1,0 +1,7 @@
+[2025-05-23T22:51:59.717Z] - Erro ao inserir usuário!MongoServerSelectionError: connect ECONNREFUSED ::1:1, connect ECONNREFUSED 127.0.0.1:1
+[2025-05-23T23:01:51.703Z] - Usuário inserido:
+[2025-05-23T23:02:52.921Z] - Erro ao inserir usuário!MongoServerSelectionError: connect ECONNREFUSED ::1:1, connect ECONNREFUSED 127.0.0.1:1
+[2025-05-23T23:07:22.161Z] - Usuário inserido:
+[2025-05-23T23:08:12.007Z] - Erro ao inserir usuário!MongoServerSelectionError: connect ECONNREFUSED ::1:1, connect ECONNREFUSED 127.0.0.1:1
+[2025-05-23T23:13:57.434Z] - Erro ao encontrar usuário!TypeError: db.collection(...).find(...).ToArray is not a function
+[2025-05-23T23:16:31.077Z] - Erro ao encontrar usuário!TypeError: db.collection(...).find(...).ToArray is not a function
