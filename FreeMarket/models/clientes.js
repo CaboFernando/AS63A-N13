@@ -38,12 +38,34 @@ class Cliente {
     }
 
     async listar() {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const clientes = await db.collection("clientes").find().toArray();
 
-            console.log("Clientes listados:", clientes);
-            return clientes;
+            const clientesCompletos = await Promise.all(
+                clientes.map(async (cliente) => {
+                    const pedido = cliente.idPedido
+                        ? await db.collection("pedidos").findOne({ _id: new ObjectId(cliente.idPedido) })
+                        : null;
+                    const endereco = cliente.idEndereco
+                        ? await db.collection("enderecos").findOne({ _id: new ObjectId(cliente.idEndereco) })
+                        : null;
+
+                    const {idPedido, idEndereco, ...clienteRest} = cliente;
+                    return {
+                        ...clienteRest,
+                        pedido,
+                        endereco,
+                        isAtivo: cliente.isAtivo
+                    };
+                })
+            );
+
+            console.log("Clientes listados:", clientesCompletos);
+            return clientesCompletos;
 
         } catch (error) {
             Logger.log("Erro ao listar os clientes!" + error);
@@ -53,11 +75,34 @@ class Cliente {
     }
 
     async obterPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
-            const cliente = await db.collection("clientes").findOne({ _id: new ObjectId(id) });
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
 
-            cliente ? console.log("Cliente encontrado:", cliente) : console.log("Cliente não encontrado.");
+            const cliente = await db.collection("clientes").findOne({ _id: new ObjectId(id) });
+            if (!cliente) {
+                console.log("Cliente não encontrado.");
+                return null;
+            }
+
+            const pedido = cliente.idPedido
+                ? await db.collection("pedidos").findOne({ _id: new ObjectId(cliente.idPedido) })
+                : null;
+            const endereco = cliente.idEndereco
+                ? await db.collection("enderecos").findOne({ _id: new ObjectId(cliente.idEndereco) })
+                : null;
+
+            const { idPedido, idEndereco, ...clienteRest } = cliente;
+            const clienteCompleto = {
+                ...clienteRest,
+                pedido,
+                endereco,
+                isAtivo: cliente.isAtivo
+            };
+
+            console.log("Cliente encontrado:", clienteCompleto);
+            return clienteCompleto;
 
         } catch (error) {
             Logger.log("Erro ao obter cliente po ID!" + error);
