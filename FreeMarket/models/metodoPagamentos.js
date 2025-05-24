@@ -11,8 +11,20 @@ class MetodoPagamento {
     }
 
     async inserir() {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!this.tipo || !this.dados || !this.status) {
+                throw new Error("Tipo, dados e status são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
+            const tiposPermitidos = ["Crédito", "Débito", "PIX"];
+            if (!tiposPermitidos.includes(this.tipo)) {
+                throw new Error("Tipo de pagamento inválido.");
+            }
+
             const resultado = await db.collection("metodoPagamentos").insertOne({
                 tipo: this.tipo,
                 dados: this.dados,
@@ -26,13 +38,16 @@ class MetodoPagamento {
         } catch (error) {
             Logger.log("Erro ao inserir método de pagamento! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async listar() {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const metodos = await db.collection("metodoPagamentos").find().toArray();
 
             console.log("Métodos de Pagamentos listados:", metodos);
@@ -41,13 +56,16 @@ class MetodoPagamento {
         } catch (error) {
             Logger.log("Erro ao listar métodos de pagamento! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async obterPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const metodo = await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(id) });
 
             metodo ? console.log("Método de Pagamento encontrado:", metodo) : console.log("Método de Pagamento não encontrado.");
@@ -55,13 +73,16 @@ class MetodoPagamento {
         } catch (error) {
             Logger.log("Erro ao obter método de pagamento por ID! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async removerPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const resultado = await db.collection("metodoPagamentos").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Método de pagamento removido com sucesso." : "Método de pagamento não encontrado para remoção.");
@@ -69,13 +90,25 @@ class MetodoPagamento {
         } catch (error) {
             Logger.log("Erro ao remover método de pagamento por ID! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async atualizar(filtro, novosDados) {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!novosDados.tipo || !novosDados.dados || !novosDados.status) {
+                throw new Error("Tipo, dados e status são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
+            const tiposPermitidos = ["Crédito", "Débito", "PIX"];
+            if (!tiposPermitidos.includes(novosDados.tipo)) {
+                throw new Error("Tipo de pagamento inválido.");
+            }
+
             const resultado = await db.collection("metodoPagamentos").updateOne(filtro, { $set: novosDados });
 
             console.log(resultado.modifiedCount > 0 ? "Método de pagamento atualizado com sucesso!" : "Método de pagamento não encontrado para atualização.");
@@ -83,7 +116,7 @@ class MetodoPagamento {
         } catch (error) {
             Logger.log("Erro ao atualizar método de pagamento! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 }

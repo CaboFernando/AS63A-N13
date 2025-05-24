@@ -13,8 +13,21 @@ class Pedido {
     }
 
     async inserir() {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!this.idProduto || !this.idMetodoPagamento) {
+                throw new Error("IDs de Produto e Método de Pagamento são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
+            const produtoExiste = await db.collection("produtos").findOne({ _id: new ObjectId(this.idProduto) });
+            if (!produtoExiste) throw new Error("Produto não encontrado.");
+
+            const metodoPagamentoExiste = await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(this.idMetodoPagamento) });
+            if (!metodoPagamentoExiste) throw new Error("Método de pagamento não encontrado.");
+
             const resultado = await db.collection("pedidos").insertOne({
                 dataCompra: this.dataCompra,
                 dataEntrega: this.dataEntrega,
@@ -30,7 +43,7 @@ class Pedido {
         } catch (error) {
             Logger.log("Erro ao inserir pedido! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
@@ -67,7 +80,7 @@ class Pedido {
         } catch (error) {
             Logger.log("Erro ao listar pedidos: " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
@@ -104,13 +117,16 @@ class Pedido {
         } catch (error) {
             Logger.log("Erro ao obter pedido por ID! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async removerPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const resultado = await db.collection("pedidos").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Pedido removido com sucesso." : "Pedido não encontrado para remoção.");
@@ -118,13 +134,26 @@ class Pedido {
         } catch (error) {
             Logger.log("Erro ao remover pedido por ID! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async atualizar(filtro, novosDados) {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!novosDados.idProduto || !novosDados.idMetodoPagamento) {
+                throw new Error("IDs de Produto e Método de Pagamento são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
+            const produtoExiste = await db.collection("produtos").findOne({ _id: new ObjectId(novosDados.idProduto) });
+            if (!produtoExiste) throw new Error("Produto não encontrado.");
+
+            const metodoPagamentoExiste = await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(novosDados.idMetodoPagamento) });
+            if (!metodoPagamentoExiste) throw new Error("Método de pagamento não encontrado.");
+
             const resultado = await db.collection("pedidos").updateOne(filtro, { $set: novosDados });
 
             console.log(resultado.modifiedCount > 0 ? "Pedido atualizado com sucesso!" : "Pedido não encontrado para atualização.");
@@ -132,7 +161,7 @@ class Pedido {
         } catch (error) {
             Logger.log("Erro ao atualizar pedido! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 }

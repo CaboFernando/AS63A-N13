@@ -15,11 +15,7 @@ async function testarInsercao() {
         "Rua Principal",
         "100",
         "12345-678",
-        "Centro",
-        "Bairro Central",
-        "Cidade Exemplo",
-        "Sala 101",
-        "SP",
+        "Centro",        
         true
     );
     const enderecoId = await end.inserir();
@@ -28,16 +24,14 @@ async function testarInsercao() {
         "Notebook",
         "Notebook de última geração",
         "novo",
-        2999.99,
         true
     );
     const produtoId = await produto.inserir();
 
     const met = new MetodoPagamento(
-        "Cartão de Crédito",
+        "Crédito",
         "1234-1234-1234-1234",
         "ativo",
-        "Parcela única",
         true
     );
     const metodoPagamentoId = await met.inserir();
@@ -152,11 +146,7 @@ async function testarAtualizacao() {
             rua: "Rua Atualizada",
             numero: "456",
             cep: "12345-678",
-            logradouro: "Logradouro Atualizado",
-            bairro: "Bairro Atualizado",
-            cidade: "Cidade Atualizada",
-            complemento: "Apto 202",
-            estado: "SP",
+            logradouro: "Logradouro Atualizado",            
             isAtivo: true
         };
 
@@ -172,7 +162,6 @@ async function testarAtualizacao() {
             tipo: "Crédito",
             dados: "Cartão Visa",
             status: "ativo",
-            detalhes: "Parcela única",
             isAtivo: true
         };
 
@@ -189,9 +178,7 @@ async function testarAtualizacao() {
             dataEntrega: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
             idProduto: pedidoExistente.idProduto,
             idMetodoPagamento: pedidoExistente.idMetodoPagamento,
-            idCliente: pedidoExistente.idCliente,
             status: "entregue",
-            data: new Date(),
             isAtivo: true
         };
 
@@ -207,7 +194,6 @@ async function testarAtualizacao() {
             nome: "Produto Atualizado",
             descricao: "Descrição atualizada do produto",
             condicao: "novo",
-            preco: 199.99,
             isAtivo: true
         };
 
