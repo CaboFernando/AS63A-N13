@@ -21,10 +21,12 @@ class MetodoPagamento {
             });
 
             console.log("Método de Pagamento inserido:", resultado.insertedId);
-            client.close();
+            return resultado.insertedId;
 
         } catch (error) {
             Logger.log("Erro ao inserir método de pagamento! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -34,12 +36,12 @@ class MetodoPagamento {
             const metodos = await db.collection("metodoPagamentos").find().toArray();
 
             console.log("Métodos de Pagamentos listados:", metodos);
-            client.close();
-
             return metodos;
 
         } catch (error) {
             Logger.log("Erro ao listar métodos de pagamento! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -49,10 +51,11 @@ class MetodoPagamento {
             const metodo = await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(id) });
 
             metodo ? console.log("Método de Pagamento encontrado:", metodo) : console.log("Método de Pagamento não encontrado.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao obter método de pagamento por ID! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -62,10 +65,11 @@ class MetodoPagamento {
             const resultado = await db.collection("metodoPagamentos").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Método de pagamento removido com sucesso." : "Método de pagamento não encontrado para remoção.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao remover método de pagamento por ID! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -75,10 +79,11 @@ class MetodoPagamento {
             const resultado = await db.collection("metodoPagamentos").updateOne(filtro, { $set: novosDados });
 
             console.log(resultado.modifiedCount > 0 ? "Método de pagamento atualizado com sucesso!" : "Método de pagamento não encontrado para atualização.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao atualizar método de pagamento! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 }
