@@ -15,8 +15,24 @@ class Cliente {
     }
 
     async inserir() {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!this.nome || !this.email || !this.documento) {
+                throw new Error("Nome, email e documento são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
+            if (this.idPedido) {
+                const pedidoExiste = await db.collection("pedidos").findOne({ _id: new ObjectId(this.idPedido) });
+                if (!pedidoExiste) throw new Error("Pedido relacionado não encontrado.");
+            }
+            if (this.idEndereco) {
+                const enderecoExiste = await db.collection("enderecos").findOne({ _id: new ObjectId(this.idEndereco) });
+                if (!enderecoExiste) throw new Error("Endereço relacionado não encontrado.");
+            }
+
             const resultado = await db.collection("clientes").insertOne({
                 nome: this.nome,
                 email: this.email,
@@ -31,9 +47,9 @@ class Cliente {
             return resultado.insertedId;
 
         } catch (error) {
-            Logger.log("Erro ao inserir cliente!" + error);
+            Logger.log("Erro ao inserir cliente: " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
@@ -54,7 +70,7 @@ class Cliente {
                         ? await db.collection("enderecos").findOne({ _id: new ObjectId(cliente.idEndereco) })
                         : null;
 
-                    const {idPedido, idEndereco, ...clienteRest} = cliente;
+                    const { idPedido, idEndereco, ...clienteRest } = cliente;
                     return {
                         ...clienteRest,
                         pedido,
@@ -68,9 +84,9 @@ class Cliente {
             return clientesCompletos;
 
         } catch (error) {
-            Logger.log("Erro ao listar os clientes!" + error);
+            Logger.log("Erro ao listar clientes: " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
@@ -105,29 +121,51 @@ class Cliente {
             return clienteCompleto;
 
         } catch (error) {
-            Logger.log("Erro ao obter cliente po ID!" + error);
+            Logger.log("Erro ao obter cliente por ID: " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async removerPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const resultado = await db.collection("clientes").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Cliente removido com sucesso." : "Cliente não encontrado para remoção.");
 
         } catch (error) {
-            Logger.log("Erro ao remover cliente por ID!" + error);
+            Logger.log("Erro ao remover cliente por ID: " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async atualizarCliente(filtro, novosDados) {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!filtro || Object.keys(filtro).length === 0) {
+                throw new Error("Filtro de atualização inválido.");
+            }
+
+            if (!novosDados.nome || !novosDados.email || !novosDados.documento) {
+                throw new Error("Nome, email e documento são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;            
+
+            if (novosDados.idPedido) {
+                const pedidoExiste = await db.collection("pedidos").findOne({ _id: new ObjectId(novosDados.idPedido) });
+                if (!pedidoExiste) throw new Error("Pedido relacionado não encontrado.");
+            }
+            if (novosDados.idEndereco) {
+                const enderecoExiste = await db.collection("enderecos").findOne({ _id: new ObjectId(novosDados.idEndereco) });
+                if (!enderecoExiste) throw new Error("Endereço relacionado não encontrado.");
+            }
 
             const resultado = await db.collection("clientes").updateOne(filtro, {
                 $set: novosDados,
@@ -136,9 +174,9 @@ class Cliente {
             console.log(resultado.modifiedCount > 0 ? "Cliente atualizado com sucesso." : "Cliente não encontrado para atualização.");
 
         } catch (error) {
-            Logger.log("Erro ao atualizar cliente! " + error);
+            Logger.log("Erro ao atualizar cliente: " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 

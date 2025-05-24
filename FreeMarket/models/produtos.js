@@ -11,8 +11,20 @@ class Produto {
     }
 
     async inserir() {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!this.nome || !this.descricao || !this.condicao) {
+                throw new Error("Nome, descrição e condição são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
+            const condicoesPermitidas = ["novo", "usado", "recondicionado"];
+            if (!condicoesPermitidas.includes(this.condicao)) {
+                throw new Error("Condição inválida.");
+            }
+
             const resultado = await db.collection("produtos").insertOne({
                 nome: this.nome,
                 descricao: this.descricao,
@@ -26,13 +38,16 @@ class Produto {
         } catch (error) {
             Logger.log("Erro ao inserir produto! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async listar() {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const produtos = await db.collection("produtos").find().toArray();
 
             console.log("Produtos listados:", produtos);
@@ -41,13 +56,16 @@ class Produto {
         } catch (error) {
             Logger.log("Erro ao listar produtos! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async obterPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const produto = await db.collection("produtos").findOne({ _id: new ObjectId(id) });
 
             produto ? console.log("Produto encontrado:", produto) : console.log("Produto não encontrado.");
@@ -55,13 +73,16 @@ class Produto {
         } catch (error) {
             Logger.log("Erro ao obter produto por ID! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async removerPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const resultado = await db.collection("produtos").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Produto removido com sucesso." : "Produto não encontrado para remoção.");
@@ -69,13 +90,25 @@ class Produto {
         } catch (error) {
             Logger.log("Erro ao remover produto por ID! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 
     async atualizar(filtro, novosDados) {
+        let client;
         try {
-            const { db, client } = await connect();
+            if (!novosDados.nome || !novosDados.descricao || !novosDados.condicao) {
+                throw new Error("Nome, descrição e condição são obrigatórios.");
+            }
+
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
+            const condicoesPermitidas = ["novo", "usado", "recondicionado"];
+            if (!condicoesPermitidas.includes(novosDados.condicao)) {
+                throw new Error("Condição inválida.");
+            }
+
             const resultado = await db.collection("produtos").updateOne(filtro, { $set: novosDados });
 
             console.log(resultado.modifiedCount > 0 ? "Produto atualizado com sucesso!" : "Produto não encontrado para atualização.");
@@ -83,7 +116,7 @@ class Produto {
         } catch (error) {
             Logger.log("Erro ao atualizar produto! " + error);
         } finally {
-            console.log("Fechando conexão com o banco de dados.");
+            if (client) await client.close();
         }
     }
 }
