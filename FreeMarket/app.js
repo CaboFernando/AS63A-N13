@@ -11,11 +11,57 @@ const pedido = new Pedido();
 const cliente = new Cliente();
 
 async function testarInsercao() {
-    await endereco.inserir();
-    await produto.inserir();
-    await metodoPagamento.inserir();
-    await pedido.inserir();
-    await cliente.inserir();
+    const end = new Endereco(
+        "Rua Principal",
+        "100",
+        "12345-678",
+        "Centro",
+        "Bairro Central",
+        "Cidade Exemplo",
+        "Sala 101",
+        "SP",
+        true
+    );
+    const enderecoId = await end.inserir();
+
+    const produto = new Produto(
+        "Notebook",
+        "Notebook de última geração",
+        "novo",
+        2999.99,
+        true
+    );
+    const produtoId = await produto.inserir();
+
+    const met = new MetodoPagamento(
+        "Cartão de Crédito",
+        "1234-1234-1234-1234",
+        "ativo",
+        "Parcela única",
+        true
+    );
+    const metodoPagamentoId = await met.inserir();
+
+    const ped = new Pedido(
+        new Date(),
+        new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+        produtoId,
+        metodoPagamentoId,
+        "processando",
+        true
+    );
+    const pedidoId = await ped.inserir();
+
+    const cli = new Cliente(
+        "João Silva",
+        "joao@example.com",
+        "(11) 99999-8888",
+        "123.456.789-09",
+        pedidoId,
+        enderecoId,
+        true
+    );
+    const clienteId = await cli.inserir();
 }
 
 async function testarListar() {
@@ -78,7 +124,7 @@ async function testarRemoverPorId() {
     }
 }
 
-async function testarAtualizacao() {    
+async function testarAtualizacao() {
     const clientes = (await cliente.listar()).map(c => Object.assign(new Cliente(), c));
     if (clientes.length > 0) {
         const clienteExistente = clientes[0];
@@ -174,7 +220,7 @@ async function testarAtualizacao() {
 
 
 //testarInsercao();
-//testarListar();
+testarListar();
 //testarObterPorId();
+//testarAtualizacao();
 //testarRemoverPorId();
-testarAtualizacao();

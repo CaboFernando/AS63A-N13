@@ -28,10 +28,12 @@ class Cliente {
             });
 
             console.log("Cliente inserido:", resultado.insertedId);
-            client.close();
+            return resultado.insertedId;
 
         } catch (error) {
             Logger.log("Erro ao inserir cliente!" + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -41,12 +43,12 @@ class Cliente {
             const clientes = await db.collection("clientes").find().toArray();
 
             console.log("Clientes listados:", clientes);
-            client.close();
-
             return clientes;
 
         } catch (error) {
             Logger.log("Erro ao listar os clientes!" + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -54,12 +56,13 @@ class Cliente {
         try {
             const { db, client } = await connect();
             const cliente = await db.collection("clientes").findOne({ _id: new ObjectId(id) });
-            
+
             cliente ? console.log("Cliente encontrado:", cliente) : console.log("Cliente não encontrado.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao obter cliente po ID!" + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -69,10 +72,11 @@ class Cliente {
             const resultado = await db.collection("clientes").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Cliente removido com sucesso." : "Cliente não encontrado para remoção.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao remover cliente por ID!" + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -85,10 +89,11 @@ class Cliente {
             });
 
             console.log(resultado.modifiedCount > 0 ? "Cliente atualizado com sucesso." : "Cliente não encontrado para atualização.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao atualizar cliente! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 

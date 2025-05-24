@@ -23,12 +23,14 @@ class Pedido {
                 status: this.status,
                 isAtivo: this.isAtivo
             });
-            
+
             console.log("Pedido inserido:", resultado.insertedId);
-            client.close();
+            return resultado.insertedId;
 
         } catch (error) {
             Logger.log("Erro ao inserir pedido! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -38,12 +40,12 @@ class Pedido {
             const pedidos = await db.collection("pedidos").find().toArray();
 
             console.log("Pedidos listados:", pedidos);
-            client.close();
-
             return pedidos;
 
         } catch (error) {
             Logger.log("Erro ao listar pedidos! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -53,10 +55,11 @@ class Pedido {
             const pedido = await db.collection("pedidos").findOne({ _id: new ObjectId(id) });
 
             pedido ? console.log("Pedido encontrado:", pedido) : console.log("Pedido não encontrado.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao obter pedido por ID! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -66,10 +69,11 @@ class Pedido {
             const resultado = await db.collection("pedidos").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Pedido removido com sucesso." : "Pedido não encontrado para remoção.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao remover pedido por ID! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -79,10 +83,11 @@ class Pedido {
             const resultado = await db.collection("pedidos").updateOne(filtro, { $set: novosDados });
 
             console.log(resultado.modifiedCount > 0 ? "Pedido atualizado com sucesso!" : "Pedido não encontrado para atualização.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao atualizar pedido! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 }

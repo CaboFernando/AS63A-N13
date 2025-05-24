@@ -23,10 +23,12 @@ class Endereco {
             });
 
             console.log("Endereço inserido:", resultado.insertedId);
-            client.close();
+            return resultado.insertedId;
 
         } catch (error) {
             Logger.log("Erro ao inserir endereço! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -36,12 +38,12 @@ class Endereco {
             const enderecos = await db.collection("enderecos").find().toArray();
 
             console.log("Endereços listados:", enderecos);
-            client.close();
-
             return enderecos;
 
         } catch (error) {
             Logger.log("Erro ao listar endereços! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -51,10 +53,11 @@ class Endereco {
             const endereco = await db.collection("enderecos").findOne({ _id: new ObjectId(id) });
 
             endereco ? console.log("Endereço encontrado:", endereco) : console.log("Endereço não encontrado.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao obter endereço por ID! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -64,10 +67,11 @@ class Endereco {
             const resultado = await db.collection("enderecos").deleteOne({ _id: new ObjectId(id) });
 
             console.log(resultado.deletedCount > 0 ? "Endereço removido com sucesso." : "Endereço não encontrado para remoção.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao remover endereço por ID! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 
@@ -77,10 +81,11 @@ class Endereco {
             const resultado = await db.collection("enderecos").updateOne(filtro, { $set: novosDados });
 
             console.log(resultado.modifiedCount > 0 ? "Endereço atualizado com sucesso!" : "Endereço não encontrado para atualização.");
-            client.close();
 
         } catch (error) {
             Logger.log("Erro ao atualizar endereço! " + error);
+        } finally {
+            console.log("Fechando conexão com o banco de dados.");
         }
     }
 }
