@@ -35,26 +35,71 @@ class Pedido {
     }
 
     async listar() {
+        let client;
         try {
-            const { db, client } = await connect();
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
+
             const pedidos = await db.collection("pedidos").find().toArray();
 
-            console.log("Pedidos listados:", pedidos);
-            return pedidos;
+            const pedidosComletos = await Promise.all(
+                pedidos.map(async (pedido) => {
+                    const produto = pedido.idProduto
+                        ? await db.collection("produtos").findOne({ _id: new ObjectId(pedido.idProduto) })
+                        : null;
+                    const metodoPagamento = pedido.idMetodoPagamento
+                        ? await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(pedido.idMetodoPagamento) })
+                        : null;
+
+                    const { idProduto, idMetodoPagamento, ...pedidoRest } = pedido;
+                    return {
+                        ...pedidoRest,
+                        produto,
+                        metodoPagamento,
+                        isAtivo: pedido.isAtivo
+                    };
+                })
+            );
+
+            console.log("Pedidos listados:", pedidosComletos);
+            return pedidosComletos;
 
         } catch (error) {
-            Logger.log("Erro ao listar pedidos! " + error);
+            Logger.log("Erro ao listar pedidos: " + error);
         } finally {
             console.log("Fechando conexão com o banco de dados.");
         }
     }
 
     async obterPorId(id) {
+        let client;
         try {
-            const { db, client } = await connect();
-            const pedido = await db.collection("pedidos").findOne({ _id: new ObjectId(id) });
+            const { db, client: connectedClient } = await connect();
+            client = connectedClient;
 
-            pedido ? console.log("Pedido encontrado:", pedido) : console.log("Pedido não encontrado.");
+            const pedido = await db.collection("pedidos").findOne({ _id: new ObjectId(id) });
+            if (!pedido) {
+                console.log("Pedido não encontrado.");
+                return null;
+            }
+
+            const produto = pedido.idProduto
+                ? await db.collection("produtos").findOne({ _id: new ObjectId(pedido.idProduto) })
+                : null;
+            const metodoPagamento = pedido.idMetodoPagamento
+                ? await db.collection("metodoPagamentos").findOne({ _id: new ObjectId(pedido.idMetodoPagamento) })
+                : null;
+
+            const { idProduto, idMetodoPagamento, ...pedidoRest } = pedido;
+            const pedidoCompleto = {
+                ...pedidoRest,
+                produto,
+                metodoPagamento,
+                isAtivo: pedido.isAtivo
+            };
+
+            console.log("Pedido encontrado:", pedidoCompleto);
+            return pedidoCompleto;
 
         } catch (error) {
             Logger.log("Erro ao obter pedido por ID! " + error);
