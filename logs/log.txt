@@ -1,0 +1,12 @@
+[2025-05-23T18:38:29.128Z] - Teste de log no sistema
+[2025-05-23T19:45:13.338Z] - Erro ao atualizar endereço! MongoInvalidArgumentError: Selector must be a valid JavaScript object
+[2025-05-23T19:45:13.344Z] - Erro ao atualizar produto! MongoInvalidArgumentError: Selector must be a valid JavaScript object
+[2025-05-23T19:45:13.349Z] - Erro ao atualizar método de pagamento! MongoInvalidArgumentError: Selector must be a valid JavaScript object
+[2025-05-23T19:45:13.356Z] - Erro ao atualizar pedido! MongoInvalidArgumentError: Selector must be a valid JavaScript object
+[2025-05-24T18:20:03.459Z] - Erro ao atualizar pedido! Error: IDs de Produto e Método de Pagamento são obrigatórios.
+[2025-05-24T18:22:57.337Z] - Erro ao inserir método de pagamento! Error: Tipo de pagamento inválido.
+[2025-05-24T18:22:57.339Z] - Erro ao inserir pedido! Error: IDs de Produto e Método de Pagamento são obrigatórios.
+[2025-05-24T18:27:29.286Z] - Erro ao atualizar pedido! Error: IDs de Produto e Método de Pagamento são obrigatórios.
+[2025-05-29T20:44:18.218Z] - Erro ao inserir endereço: Error: CEP inválido (formato esperado: 12345-678).
+[2025-05-29T20:47:45.995Z] - Erro ao inserir método de pagamento! Error: Tipo de pagamento inválido.
+[2025-05-29T20:47:45.996Z] - Erro ao inserir pedido! Error: IDs de Produto e Método de Pagamento são obrigatórios.
