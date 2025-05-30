@@ -9,6 +9,8 @@ Repositório destinado a disciplina de Programação Web Back-End
 - Aula 6 - Introdução ao MongoDB
 - Aula 7 - Node + MongoDb
 - Aula 8 - CRUD completo
+- Aula 9 - Export Mongo
+- Aula 10 - 
 
 
 ## Comando usados em toda aula:
