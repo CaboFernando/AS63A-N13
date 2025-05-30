@@ -1,0 +1,5 @@
+1. Menu inicial: opção de escolher entre as entidades(cliente, endereço, pagamento, pedido e produto)
+2. Ao entrar em cada entidade vai ter operações crud(cadastrar, listar, atulizar, remover)
+3. Cadastrar sem ter vinculo(Endereço, metodo de pagamento e produto)
+4. Pedido - obrigatorio ter um produto e metodo de pagamento
+5. Cliente - obrigatorio ter endereço e opcional pedido
