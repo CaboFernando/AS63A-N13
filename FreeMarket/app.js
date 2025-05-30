@@ -1,3 +1,5 @@
+const readline = require("readline");
+
 const Cliente = require("./models/clientes");
 const Endereco = require("./models/enderecos");
 const MetodoPagamento = require("./models/metodoPagamentos");
@@ -10,203 +12,181 @@ const metodoPagamento = new MetodoPagamento();
 const pedido = new Pedido();
 const cliente = new Cliente();
 
-async function testarInsercao() {
-    const end = new Endereco(
-        "Rua Principal",
-        "100",
-        "12345-678",
-        "Centro",        
-        true
-    );
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function perguntar(pergunta) {
+    return new Promise((resolve) => rl.question(pergunta, resolve));
+}
+
+async function inserirComInput() {
+    console.log("\n--- Inserindo novo cliente ---");
+
+    const rua = await perguntar("Rua: ");
+    const numero = await perguntar("Número: ");
+    const cep = await perguntar("CEP: ");
+    const bairro = await perguntar("Bairro: ");
+    const end = new Endereco(rua, numero, cep, bairro, true);
     const enderecoId = await end.inserir();
 
-    const produto = new Produto(
-        "Notebook",
-        "Notebook de última geração",
-        "novo",
-        true
-    );
-    const produtoId = await produto.inserir();
+    const nomeProduto = await perguntar("Nome do produto: ");
+    const descricaoProduto = await perguntar("Descrição: ");
+    const condicaoProduto = await perguntar("Condição (novo/usado): ");
+    const prod = new Produto(nomeProduto, descricaoProduto, condicaoProduto, true);
+    const produtoId = await prod.inserir();
 
-    const met = new MetodoPagamento(
-        "Crédito",
-        "1234-1234-1234-1234",
-        "ativo",
-        true
-    );
+    const tipoPagamento = await perguntar("Tipo de pagamento: ");
+    const dadosPagamento = await perguntar("Dados do pagamento: ");
+    const met = new MetodoPagamento(tipoPagamento, dadosPagamento, "ativo", true);
     const metodoPagamentoId = await met.inserir();
 
-    const ped = new Pedido(
-        new Date(),
-        new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-        produtoId,
-        metodoPagamentoId,
-        "processando",
-        true
-    );
+    const dataCompra = new Date();
+    const dataEntrega = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const ped = new Pedido(dataCompra, dataEntrega, produtoId, metodoPagamentoId, "processando", true);
     const pedidoId = await ped.inserir();
 
-    const cli = new Cliente(
-        "João Silva",
-        "joao@example.com",
-        "(11) 99999-8888",
-        "123.456.789-09",
-        pedidoId,
-        enderecoId,
-        true
-    );
-    const clienteId = await cli.inserir();
+    const nomeCliente = await perguntar("Nome: ");
+    const emailCliente = await perguntar("Email: ");
+    const telefoneCliente = await perguntar("Telefone: ");
+    const documentoCliente = await perguntar("Documento: ");
+    const cli = new Cliente(nomeCliente, emailCliente, telefoneCliente, documentoCliente, pedidoId, enderecoId, true);
+    await cli.inserir();
+
+    console.log("Cliente inserido com sucesso!\n");
 }
 
-async function testarListar() {
-    const enderecos = (await endereco.listar()).map(e => Object.assign(new Endereco(), e));
-    const produtos = (await produto.listar()).map(p => Object.assign(new Produto(), p));
-    const metodosPagamento = (await metodoPagamento.listar()).map(m => Object.assign(new MetodoPagamento(), m));
-    const pedidos = (await pedido.listar()).map(p => Object.assign(new Pedido(), p));
+async function atualizarClienteComInput() {
+    console.log("\n--- Atualizando cliente ---");
     const clientes = (await cliente.listar()).map(c => Object.assign(new Cliente(), c));
+    if (clientes.length === 0) return console.log("Nenhum cliente encontrado.");
 
-    return { enderecos, produtos, metodosPagamento, pedidos, clientes };
+    clientes.forEach((c, i) => {
+        console.log(`${i + 1}. ${c.nome} (${c._id})`);
+    });
+
+    const index = parseInt(await perguntar("Escolha o número do cliente: ")) - 1;
+    const c = clientes[index];
+    if (!c) return console.log("Cliente inválido.");
+
+    const nome = await perguntar(`Nome (${c.nome}): `) || c.nome;
+    const email = await perguntar(`Email (${c.email}): `) || c.email;
+    const telefone = await perguntar(`Telefone (${c.telefone}): `) || c.telefone;
+    const documento = await perguntar(`Documento (${c.documento}): `) || c.documento;
+
+    const novosDados = {
+        nome,
+        email,
+        telefone,
+        documento,
+        idPedido: c.idPedido,
+        idEndereco: c.idEndereco,
+        isAtivo: true
+    };
+
+    await cliente.atualizarCliente({ _id: c._id }, novosDados);
+    console.log("Cliente atualizado com sucesso!\n");
 }
 
+async function removerEntidadeComInput() {
+    console.log("\n--- Remover entidade ---");
+    const tipo = await perguntar("Tipo (cliente, pedido, produto, endereco, metodo): ");
 
+    let lista, instancia, removerFn;
 
-async function testarObterPorId() {
-    const { enderecos, produtos, metodosPagamento, pedidos, clientes } = await testarListar();
-
-    if (enderecos.length > 0) {
-        await endereco.obterPorId(enderecos[0]._id);
+    switch (tipo.toLowerCase()) {
+        case "cliente":
+            lista = await cliente.listar();
+            instancia = cliente;
+            removerFn = cliente.removerPorId;
+            break;
+        case "pedido":
+            lista = await pedido.listar();
+            instancia = pedido;
+            removerFn = pedido.removerPorId;
+            break;
+        case "produto":
+            lista = await produto.listar();
+            instancia = produto;
+            removerFn = produto.removerPorId;
+            break;
+        case "endereco":
+            lista = await endereco.listar();
+            instancia = endereco;
+            removerFn = endereco.removerPorId;
+            break;
+        case "metodo":
+            lista = await metodoPagamento.listar();
+            instancia = metodoPagamento;
+            removerFn = metodoPagamento.removerPorId;
+            break;
+        default:
+            console.log("Tipo inválido.\n");
+            return;
     }
 
-    if (produtos.length > 0) {
-        await produto.obterPorId(produtos[0]._id);
-    }
+    if (!lista.length) return console.log("Nenhum item encontrado.");
 
-    if (metodosPagamento.length > 0) {
-        await metodoPagamento.obterPorId(metodosPagamento[0]._id);
-    }
+    lista.forEach((item, i) => console.log(`${i + 1}. ID: ${item._id}`));
+    const index = parseInt(await perguntar("Escolha o número do item para remover: ")) - 1;
 
-    if (pedidos.length > 0) {
-        await pedido.obterPorId(pedidos[0]._id);
-    }
+    const itemSelecionado = lista[index];
+    if (!itemSelecionado) return console.log("Item inválido.");
 
-    if (clientes.length > 0) {
-        await cliente.obterPorId(clientes[0]._id);
-    }
+    await removerFn.call(instancia, itemSelecionado._id);
+    console.log("Removido com sucesso.\n");
 }
 
-async function testarRemoverPorId() {
-    const { enderecos, produtos, metodosPagamento, pedidos, clientes } = await testarListar();
+async function listarTodos() {
+    console.log("\n--- Listando registros ---");
 
-    if (clientes.length > 0) {
-        await cliente.removerPorId(clientes[0]._id);
-    }
+    const enderecos = await endereco.listar();
+    const produtos = await produto.listar();
+    const metodos = await metodoPagamento.listar();
+    const pedidos = await pedido.listar();
+    const clientes = await cliente.listar();
 
-    if (pedidos.length > 0) {
-        await pedido.removerPorId(pedidos[0]._id);
-    }
-
-    if (metodosPagamento.length > 0) {
-        await metodoPagamento.removerPorId(metodosPagamento[0]._id);
-    }
-
-    if (produtos.length > 0) {
-        await produto.removerPorId(produtos[0]._id);
-    }
-
-    if (enderecos.length > 0) {
-        await endereco.removerPorId(enderecos[0]._id);
-    }
+    console.log("\nClientes:", clientes);
+    console.log("\nEndereços:", enderecos);
+    console.log("\nProdutos:", produtos);
+    console.log("\nPedidos:", pedidos);
+    console.log("\nMétodos de Pagamento:", metodos);
+    console.log();
 }
 
-async function testarAtualizacao() {
-    const clientes = (await cliente.listar()).map(c => Object.assign(new Cliente(), c));
-    if (clientes.length > 0) {
-        const clienteExistente = clientes[0];
-        const filtro = { _id: clienteExistente._id };
+async function menu() {
+    while (true) {
+        console.log("==== MENU PRINCIPAL ====");
+        console.log("1. Inserir novo cliente");
+        console.log("2. Atualizar cliente");
+        console.log("3. Remover entidade");
+        console.log("4. Listar todos");
+        console.log("5. Sair\n");
 
-        const novosDados = {
-            nome: "Nome Atualizado",
-            email: "clienteatualizado@example.com",
-            telefone: "99999-8888",
-            documento: "123.456.789-00",
-            idPedido: clienteExistente.idPedido,
-            idEndereco: clienteExistente.idEndereco,
-            isAtivo: true
-        };
-
-        await cliente.atualizarCliente(filtro, novosDados);
-    }
-
-    const enderecos = (await endereco.listar()).map(e => Object.assign(new Endereco(), e));
-    if (enderecos.length > 0) {
-        const enderecoExistente = enderecos[0];
-        const filtro = { _id: enderecoExistente._id };
-
-        const novosDados = {
-            rua: "Rua Atualizada",
-            numero: "456",
-            cep: "12345-678",
-            logradouro: "Logradouro Atualizado",            
-            isAtivo: true
-        };
-
-        await endereco.atualizar(filtro, novosDados);
-    }
-
-    const metodos = (await metodoPagamento.listar()).map(m => Object.assign(new MetodoPagamento(), m));
-    if (metodos.length > 0) {
-        const metodoExistente = metodos[0];
-        const filtro = { _id: metodoExistente._id };
-
-        const novosDados = {
-            tipo: "Crédito",
-            dados: "Cartão Visa",
-            status: "ativo",
-            isAtivo: true
-        };
-
-        await metodoPagamento.atualizar(filtro, novosDados);
-    }
-
-    const pedidos = (await pedido.listar()).map(p => Object.assign(new Pedido(), p));
-    if (pedidos.length > 0) {
-        const pedidoExistente = pedidos[0];
-        const filtro = { _id: pedidoExistente._id };
-
-        const novosDados = {
-            dataCompra: new Date(),
-            dataEntrega: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-            idProduto: pedidoExistente.idProduto,
-            idMetodoPagamento: pedidoExistente.idMetodoPagamento,
-            status: "entregue",
-            isAtivo: true
-        };
-
-        await pedido.atualizar(filtro, novosDados);
-    }
-
-    const produtos = (await produto.listar()).map(p => Object.assign(new Produto(), p));
-    if (produtos.length > 0) {
-        const produtoExistente = produtos[0];
-        const filtro = { _id: produtoExistente._id };
-
-        const novosDados = {
-            nome: "Produto Atualizado",
-            descricao: "Descrição atualizada do produto",
-            condicao: "novo",
-            isAtivo: true
-        };
-
-        await produto.atualizar(filtro, novosDados);
+        const opcao = await perguntar("Escolha uma opção: ");
+        switch (opcao) {
+            case "1":
+                await inserirComInput();
+                break;
+            case "2":
+                await atualizarClienteComInput();
+                break;
+            case "3":
+                await removerEntidadeComInput();
+                break;
+            case "4":
+                await listarTodos();
+                break;
+            case "5":
+                console.log("Encerrando...");
+                rl.close();
+                process.exit();
+                break;
+            default:
+                console.log("Opção inválida.\n");
+        }
     }
 }
 
-
-
-
-
-//testarInsercao();
-testarListar();
-//testarObterPorId();
-//testarAtualizacao();
-//testarRemoverPorId();
+menu();
