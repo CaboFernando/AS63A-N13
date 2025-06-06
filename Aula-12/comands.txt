@@ -1,0 +1,11 @@
+node -v
+npm -v
+npm init -y
+npm install express
+npm install handlebars
+npm install hbs
+npm install -g express-generator
+
+express minha-casa --view=ejs
+
+npm install nodemon
