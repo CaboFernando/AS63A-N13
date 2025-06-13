@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+</head>
+<body>
+    <h1>Página de posts!</h1>
+
+    <form action="/posts" method="get">
+        <label for="busca">Busca: </label>>
+        <input type="text" name="busca" value="">
+
+        <input type="submit" value="busca">
+    </form>
+
+    <ul>
+        {{#posts}}
+            <li>{{content}}</li>
+        {{/posts}}
+    </ul>
+</body>
+</html>
