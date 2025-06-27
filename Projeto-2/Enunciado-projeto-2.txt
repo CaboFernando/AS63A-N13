@@ -1,0 +1,12 @@
+Crie um projeto, no formato mvc usando express que contenha:
+
+    1. Uma página protegida (só deve aparecer se a pessoa realizar login corretamente. Essa página pode ser do seu projeto passado). Fazer um frontend bonitinho.
+    2. Uma página de login. Fazer um frontend bonitinho.
+    3. Use sessions e cookies
+    4. O login e senha precisam vir do banco de dados.
+
+Observação: Se atentar em fazer apenas o que pedi no projeto, para correção mais eficiente.  NÃO VOU OLHAR UM PROJETO GIGANTESCO.
+Enviar link do github. NÃO SERÁ ACEITO ARQUIVO .ZIP
+
+Não haverá apresentação, e os grupos podem continuar os mesmos. Caso queiram mudar, colocar o nome dos integrantes na entrega. 
+É necessário todos entregarem. Também é necessário que, todos os integrantes tenham colaboração no repositório.
