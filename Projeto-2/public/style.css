@@ -1,6 +1,12 @@
-body {
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+}
+body {
+    background: url(https://cdn.pixabay.com/photo/2021/01/01/13/42/snow-5878610_960_720.jpg) no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,7 +16,8 @@ body {
 }
 
 .container {
-    background-color: #fff;
+    background: rgba(176, 183, 197, 0.281);
+    color: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -20,44 +27,67 @@ body {
 }
 
 h2 {
-    color: #333;
+    font-size: 36px;
+    color: #1a1a1a;
     margin-bottom: 20px;
+}
+
+p {
+    font-size: 20px;
+    color: #1a1a1a;
+    font-weight: 700;
 }
 
 .form-group {
     margin-bottom: 15px;
     text-align: left;
+    position: relative;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.form-group input::placeholder{
+    color: #fff;
+}
+
+.form-group i {
+    position: absolute;
+    top: 50%;
+    left: 280px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.973);
+    pointer-events: none;
 }
 
 .form-group input[type="text"],
 .form-group input[type="password"] {
     width: calc(100% - 20px);
-    padding: 10px;
+    padding: 18px 20px 20px 20px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    background: transparent;
+    border-radius: 40px;
     box-sizing: border-box;
     font-size: 16px;
 }
 
+
+
+
 button {
-    background-color: #007bff;
-    color: white;
+    width: 100%;
+    height: 45px;
+    background: #fff;
     padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #6d7781;
 }
 
 .error-message {
