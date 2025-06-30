@@ -11,8 +11,8 @@ Repositório destinado a disciplina de Programação Web Back-End
 - Aula 8 - CRUD completo
 - Aula 9 - Export Mongo
 - Aula 10 - Express, rotas e templates
-- Aula 11 - Atuar no projeto 1
-- Aula 12 - Atuar no projeto 1
+- Aula 11 - Apresentação do projeto 1
+- Aula 12 - Apresentação do projeto 1
 - Aula 13 - Criando o primeiro projeto com express
 - Aula 14 - Express Generator, Nodemon e conexão com o MongoDB
 - Aula 15 - Padrão MVC e Envio de parâmetros com GET e POST
